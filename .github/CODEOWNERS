@@ -1,0 +1,11 @@
+# Social Flow AI CODEOWNERS
+#
+# Add real GitHub usernames before enabling "Require review from Code Owners".
+# Example:
+# /lib/core/                 @owner-github-username
+# /lib/app/                  @owner-github-username
+# /lib/features/auth/        @collaborator-github-username
+# /.github/                  @owner-github-username
+# /AGENTS.md                 @owner-github-username
+#
+# Keeping this file comment-only is intentional until usernames are configured.
