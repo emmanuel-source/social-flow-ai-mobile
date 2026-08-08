@@ -214,6 +214,17 @@ void main() {
     expect(createAccountCalls, 1);
   });
 
+  testWidgets('navigates to the central register route by default', (
+    tester,
+  ) async {
+    await _pumpLogin(tester);
+
+    await tester.tap(find.byKey(const Key('login-create-account')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Destination inscription'), findsOneWidget);
+  });
+
   testWidgets('exposes the forgot password secondary action', (tester) async {
     var forgotPasswordCalls = 0;
     await _pumpLogin(tester, onForgotPassword: () => forgotPasswordCalls++);
@@ -379,6 +390,8 @@ Future<void> _pumpLogin(
         routes: {
           AppRoutes.home:
               (_) => const Scaffold(body: Text('Destination principale')),
+          AppRoutes.register:
+              (_) => const Scaffold(body: Text('Destination inscription')),
         },
         home: LoginScreen(
           onCreateAccount: onCreateAccount,
@@ -415,6 +428,13 @@ class _TestAuthRepository implements AuthRepository {
     if (pending case final pending?) return pending.future;
     return _session;
   }
+
+  @override
+  Future<UserSession> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async => _session;
 
   @override
   Future<void> logout() async {}

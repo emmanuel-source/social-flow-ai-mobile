@@ -54,5 +54,57 @@ void main() {
         ),
       );
     });
+
+    test('registers a trimmed user in memory only', () async {
+      final repository = MockAuthRepository(delay: Duration.zero);
+
+      final session = await repository.register(
+        name: '  Alex Martin  ',
+        email: ' Alex@Example.com ',
+        password: 'p',
+      );
+
+      expect(session.name, 'Alex Martin');
+      expect(session.email, 'alex@example.com');
+      expect(await repository.currentSession(), same(session));
+    });
+
+    test('simulates an email already used during registration', () async {
+      final repository = MockAuthRepository(delay: Duration.zero);
+
+      expect(
+        repository.register(
+          name: 'Alex Martin',
+          email: MockAuthRepository.registeredEmail,
+          password: 'password',
+        ),
+        throwsA(
+          isA<AuthFailure>().having(
+            (error) => error.type,
+            'type',
+            AuthFailureType.emailAlreadyUsed,
+          ),
+        ),
+      );
+    });
+
+    test('simulates a generic registration failure', () async {
+      final repository = MockAuthRepository(delay: Duration.zero);
+
+      expect(
+        repository.register(
+          name: 'Alex Martin',
+          email: MockAuthRepository.registrationErrorEmail,
+          password: 'password',
+        ),
+        throwsA(
+          isA<AuthFailure>().having(
+            (error) => error.type,
+            'type',
+            AuthFailureType.generic,
+          ),
+        ),
+      );
+    });
   });
 }

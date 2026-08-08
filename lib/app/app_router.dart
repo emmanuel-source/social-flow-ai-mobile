@@ -16,6 +16,7 @@ import '../features/ai_assistant/presentation/screens/ai_assistant_screen.dart';
 import '../features/analytics/presentation/screens/post_analytics_screen.dart';
 import '../features/approvals/presentation/screens/approvals_screen.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
+import '../features/auth/presentation/screens/register_screen.dart';
 import '../features/brand_kit/presentation/screens/brand_kit_screen.dart';
 import '../features/calendar/presentation/screens/calendar_detail_screen.dart';
 import '../features/campaigns/presentation/screens/campaign_screen.dart';
@@ -76,6 +77,7 @@ abstract final class AppRouter {
             : switch (routeName) {
               AppRoutes.onboarding => const OnboardingScreen(),
               AppRoutes.login => const LoginScreen(),
+              AppRoutes.register => const RegisterScreen(),
               AppRoutes.postType => const PostTypeScreen(),
               AppRoutes.postMedia => const MediaPickerScreen(),
               AppRoutes.postCaption => const CaptionScreen(),

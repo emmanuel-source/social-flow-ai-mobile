@@ -1,6 +1,7 @@
 abstract final class AppRoutes {
   static const onboarding = '/onboarding';
   static const login = '/login';
+  static const register = '/register';
 
   // Main shell: exactly 5 UX destinations.
   static const home = '/home';

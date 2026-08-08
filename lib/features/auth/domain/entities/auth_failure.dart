@@ -1,4 +1,4 @@
-enum AuthFailureType { invalidCredentials, generic }
+enum AuthFailureType { invalidCredentials, emailAlreadyUsed, generic }
 
 class AuthFailure implements Exception {
   const AuthFailure._(this.type, this.message);
@@ -13,6 +13,12 @@ class AuthFailure implements Exception {
     : this._(
         AuthFailureType.generic,
         'Une erreur est survenue. Veuillez réessayer.',
+      );
+
+  const AuthFailure.emailAlreadyUsed()
+    : this._(
+        AuthFailureType.emailAlreadyUsed,
+        'Un compte existe déjà avec cette adresse e-mail.',
       );
 
   final AuthFailureType type;
