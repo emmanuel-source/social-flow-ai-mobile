@@ -5,20 +5,58 @@ import '../features/calendar/presentation/screens/calendar_screen.dart';
 import '../features/content/presentation/screens/create_hub_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
 import '../features/profile/presentation/screens/profile_screen.dart';
+import '../shared/widgets/app_navigation_bar.dart';
+import 'app_routes.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({required this.initialIndex, super.key});
+  const AppShell({required this.initialRoute, super.key}) : pages = null;
 
-  final int initialIndex;
+  const AppShell.testing({
+    required this.initialRoute,
+    required List<Widget> pages,
+    super.key,
+  }) : pages = pages,
+       assert(pages.length == AppRoutes.mainRoutes.length);
+
+  final String initialRoute;
+  final List<Widget>? pages;
+
+  static const destinations = <AppNavigationDestination>[
+    AppNavigationDestination(
+      label: 'Accueil',
+      icon: Icons.home_outlined,
+      selectedIcon: Icons.home,
+    ),
+    AppNavigationDestination(
+      label: 'Créer',
+      icon: Icons.add_box_outlined,
+      selectedIcon: Icons.add_box,
+    ),
+    AppNavigationDestination(
+      label: 'Calendrier',
+      icon: Icons.calendar_month_outlined,
+      selectedIcon: Icons.calendar_month,
+    ),
+    AppNavigationDestination(
+      label: 'Statistiques',
+      icon: Icons.analytics_outlined,
+      selectedIcon: Icons.analytics,
+    ),
+    AppNavigationDestination(
+      label: 'Profil',
+      icon: Icons.person_outline,
+      selectedIcon: Icons.person,
+    ),
+  ];
 
   @override
   State<AppShell> createState() => _AppShellState();
 }
 
 class _AppShellState extends State<AppShell> {
-  late int _index = widget.initialIndex;
+  late int _index = _indexForRoute(widget.initialRoute);
 
-  static const _pages = <Widget>[
+  static const _defaultPages = <Widget>[
     HomeScreen(),
     CreateHubScreen(),
     CalendarScreen(),
@@ -26,40 +64,29 @@ class _AppShellState extends State<AppShell> {
     ProfileScreen(),
   ];
 
+  static int _indexForRoute(String route) {
+    final index = AppRoutes.mainIndexForRoute(route);
+    assert(index != null, 'AppShell requires a main navigation route.');
+    return index ?? 0;
+  }
+
+  @override
+  void didUpdateWidget(covariant AppShell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialRoute != oldWidget.initialRoute) {
+      _index = _indexForRoute(widget.initialRoute);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final pages = widget.pages ?? _defaultPages;
     return Scaffold(
-      body: IndexedStack(index: _index, children: _pages),
-      bottomNavigationBar: NavigationBar(
+      body: IndexedStack(index: _index, children: pages),
+      bottomNavigationBar: AppNavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (value) => setState(() => _index = value),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.add_box_outlined),
-            selectedIcon: Icon(Icons.add_box),
-            label: 'Créer',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month),
-            label: 'Calendrier',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.analytics_outlined),
-            selectedIcon: Icon(Icons.analytics),
-            label: 'Statistiques',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
+        destinations: AppShell.destinations,
       ),
     );
   }

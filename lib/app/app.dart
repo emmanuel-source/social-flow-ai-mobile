@@ -48,10 +48,12 @@ class _SocialFlowAppState extends ConsumerState<SocialFlowApp> {
       title: 'SocialFlow AI',
       debugShowCheckedModeBanner: false,
       navigatorKey: AppRouter.navigatorKey,
+      navigatorObservers: AppRouter.navigatorObservers,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
       initialRoute: AppRouter.initialRoute,
+      onGenerateInitialRoutes: AppRouter.onGenerateInitialRoutes,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }

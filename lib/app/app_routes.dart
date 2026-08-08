@@ -9,6 +9,21 @@ abstract final class AppRoutes {
   static const analytics = '/analytics';
   static const profile = '/profile';
 
+  static const mainRoutes = <String>[
+    home,
+    create,
+    calendar,
+    analytics,
+    profile,
+  ];
+
+  static int? mainIndexForRoute(String? route) {
+    final index = mainRoutes.indexOf(route ?? '');
+    return index == -1 ? null : index;
+  }
+
+  static String mainRouteForIndex(int index) => mainRoutes[index];
+
   // Existing interactive prototype flows.
   static const postType = '/create/post-type';
   static const postMedia = '/create/media';
@@ -51,4 +66,37 @@ abstract final class AppRoutes {
   static const approvals = '/approvals';
   static const subscription = '/subscription';
   static const security = '/security';
+
+  // Reserved route contracts for secondary screens implemented in later tasks.
+  static const postDetail = '/home/post';
+  static const platformAnalytics = '/analytics/platform';
+
+  static const secondaryParentRoutes = <String, String>{
+    notifications: home,
+    postDetail: home,
+    postType: create,
+    postMedia: create,
+    postCaption: create,
+    postPlatforms: create,
+    postPreview: create,
+    postSchedule: create,
+    postSuccess: create,
+    mediaLibrary: create,
+    videoSource: create,
+    youtubeImport: create,
+    videoConfig: create,
+    videoAnalysis: create,
+    clips: create,
+    clipEditor: create,
+    subtitles: create,
+    aiAssistant: create,
+    calendarDetail: calendar,
+    postAnalytics: analytics,
+    platformAnalytics: analytics,
+    workspaces: profile,
+    accounts: profile,
+    settings: profile,
+  };
+
+  static String? parentRouteFor(String? route) => secondaryParentRoutes[route];
 }
