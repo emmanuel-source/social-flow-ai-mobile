@@ -24,8 +24,21 @@ class PerformanceChart extends StatelessWidget {
               barWidth: 4,
               color: Theme.of(context).colorScheme.primary,
               dotData: const FlDotData(show: false),
-              belowBarData: BarAreaData(show: true, color: Theme.of(context).colorScheme.primary.withValues(alpha: .12)),
-              spots: const [FlSpot(0, 3), FlSpot(1, 5), FlSpot(2, 4), FlSpot(3, 8), FlSpot(4, 7), FlSpot(5, 12), FlSpot(6, 14)],
+              belowBarData: BarAreaData(
+                show: true,
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: .12),
+              ),
+              spots: const [
+                FlSpot(0, 3),
+                FlSpot(1, 5),
+                FlSpot(2, 4),
+                FlSpot(3, 8),
+                FlSpot(4, 7),
+                FlSpot(5, 12),
+                FlSpot(6, 14),
+              ],
             ),
           ],
         ),

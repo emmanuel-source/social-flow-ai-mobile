@@ -32,19 +32,23 @@ class PostTypeScreen extends ConsumerWidget {
               }
             },
             child: Column(
-              children: items
-                  .map(
-                    (item) => RadioListTile<PostType>(
-                      value: item.$1,
-                      secondary: Icon(item.$2),
-                      title: Text(item.$3),
-                    ),
-                  )
-                  .toList(),
+              children:
+                  items
+                      .map(
+                        (item) => RadioListTile<PostType>(
+                          value: item.$1,
+                          secondary: Icon(item.$2),
+                          title: Text(item.$3),
+                        ),
+                      )
+                      .toList(),
             ),
           ),
           const SizedBox(height: 20),
-          FilledButton(onPressed: () => Navigator.pushNamed(context, AppRoutes.postMedia), child: const Text('Continuer')),
+          FilledButton(
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.postMedia),
+            child: const Text('Continuer'),
+          ),
         ],
       ),
     );

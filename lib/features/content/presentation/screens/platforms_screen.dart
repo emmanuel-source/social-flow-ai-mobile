@@ -18,9 +18,27 @@ class PlatformsScreen extends ConsumerWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ...SocialPlatform.values.map((platform) => CheckboxListTile(value: selected.contains(platform), onChanged: (_) => ref.read(composerControllerProvider.notifier).togglePlatform(platform), title: Text(platform.label), secondary: const CircleAvatar(child: Icon(Icons.public, size: 18)))),
+          ...SocialPlatform.values.map(
+            (platform) => CheckboxListTile(
+              value: selected.contains(platform),
+              onChanged:
+                  (_) => ref
+                      .read(composerControllerProvider.notifier)
+                      .togglePlatform(platform),
+              title: Text(platform.label),
+              secondary: const CircleAvatar(
+                child: Icon(Icons.public, size: 18),
+              ),
+            ),
+          ),
           const SizedBox(height: 18),
-          FilledButton(onPressed: selected.isEmpty ? null : () => Navigator.pushNamed(context, AppRoutes.postPreview), child: const Text('Prévisualiser')),
+          FilledButton(
+            onPressed:
+                selected.isEmpty
+                    ? null
+                    : () => Navigator.pushNamed(context, AppRoutes.postPreview),
+            child: const Text('Prévisualiser'),
+          ),
         ],
       ),
     );

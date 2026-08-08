@@ -1,6 +1,7 @@
 import '../../../../shared/models/social_platform.dart';
 
 enum PostType { image, video, carousel, text }
+
 enum PublicationMode { now, scheduled, draft }
 
 class SocialPost {

@@ -13,8 +13,16 @@ class WorkspaceState {
 class WorkspaceController extends Notifier<WorkspaceState> {
   @override
   WorkspaceState build() {
-    const personal = Workspace(id: 'personal', name: 'Mon espace', type: WorkspaceType.personal);
-    const brand = Workspace(id: 'socialflow', name: 'SocialFlow AI', type: WorkspaceType.brand);
+    const personal = Workspace(
+      id: 'personal',
+      name: 'Mon espace',
+      type: WorkspaceType.personal,
+    );
+    const brand = Workspace(
+      id: 'socialflow',
+      name: 'SocialFlow AI',
+      type: WorkspaceType.brand,
+    );
     const available = [personal, brand];
 
     final persistedId = LocalStorage.selectedWorkspaceId;
@@ -36,4 +44,6 @@ class WorkspaceController extends Notifier<WorkspaceState> {
 }
 
 final workspaceControllerProvider =
-    NotifierProvider<WorkspaceController, WorkspaceState>(WorkspaceController.new);
+    NotifierProvider<WorkspaceController, WorkspaceState>(
+      WorkspaceController.new,
+    );

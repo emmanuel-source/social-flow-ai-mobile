@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/storage/local_storage.dart';
 
-final themeControllerProvider = NotifierProvider<ThemeController, ThemeMode>(ThemeController.new);
+final themeControllerProvider = NotifierProvider<ThemeController, ThemeMode>(
+  ThemeController.new,
+);
 
 class ThemeController extends Notifier<ThemeMode> {
   @override

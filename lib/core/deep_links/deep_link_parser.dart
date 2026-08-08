@@ -14,17 +14,17 @@ abstract final class DeepLinkParser {
 
     return switch (segments.first) {
       'post' => DeepLinkTarget(
-          AppRoutes.postAnalytics,
-          arguments: segments.length > 1 ? segments[1] : null,
-        ),
+        AppRoutes.postAnalytics,
+        arguments: segments.length > 1 ? segments[1] : null,
+      ),
       'calendar' => DeepLinkTarget(
-          AppRoutes.calendarDetail,
-          arguments: segments.length > 1 ? segments[1] : null,
-        ),
+        AppRoutes.calendarDetail,
+        arguments: segments.length > 1 ? segments[1] : null,
+      ),
       'agent' => DeepLinkTarget(
-          AppRoutes.agentDetail,
-          arguments: segments.length > 1 ? segments[1] : null,
-        ),
+        AppRoutes.agentDetail,
+        arguments: segments.length > 1 ? segments[1] : null,
+      ),
       'create' => const DeepLinkTarget(AppRoutes.create),
       'inbox' => const DeepLinkTarget(AppRoutes.inbox),
       _ => const DeepLinkTarget(AppRoutes.home),

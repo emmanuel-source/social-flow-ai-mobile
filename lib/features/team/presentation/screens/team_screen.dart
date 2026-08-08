@@ -9,9 +9,16 @@ class TeamScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const FutureFeatureScreen(
       title: 'Équipe et permissions',
-      description: 'Prépare SocialFlow AI pour les marques, entreprises et agences travaillant à plusieurs.',
+      description:
+          'Prépare SocialFlow AI pour les marques, entreprises et agences travaillant à plusieurs.',
       icon: Icons.groups_outlined,
-      items: ['Invitations', 'Rôles', 'Permissions par workspace', 'Validation avant publication', 'Accès client en lecture/approbation'],
+      items: [
+        'Invitations',
+        'Rôles',
+        'Permissions par workspace',
+        'Validation avant publication',
+        'Accès client en lecture/approbation',
+      ],
     );
   }
 }

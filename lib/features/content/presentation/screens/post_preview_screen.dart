@@ -18,13 +18,24 @@ class PostPreviewScreen extends ConsumerWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const AppNetworkImage(url: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200'),
+          const AppNetworkImage(
+            url:
+                'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200',
+          ),
           const SizedBox(height: 14),
           Text(post.caption, style: Theme.of(context).textTheme.bodyLarge),
           const SizedBox(height: 12),
-          Wrap(spacing: 6, children: post.platforms.map((e) => Chip(label: Text(e.label))).toList()),
+          Wrap(
+            spacing: 6,
+            children:
+                post.platforms.map((e) => Chip(label: Text(e.label))).toList(),
+          ),
           const SizedBox(height: 22),
-          FilledButton(onPressed: () => Navigator.pushNamed(context, AppRoutes.postSchedule), child: const Text('Planifier la publication')),
+          FilledButton(
+            onPressed:
+                () => Navigator.pushNamed(context, AppRoutes.postSchedule),
+            child: const Text('Planifier la publication'),
+          ),
         ],
       ),
     );

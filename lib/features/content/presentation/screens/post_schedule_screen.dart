@@ -12,7 +12,11 @@ class PostScheduleScreen extends ConsumerWidget {
   Future<void> _publish(BuildContext context, WidgetRef ref) async {
     await ref.read(composerControllerProvider.notifier).publish();
     if (!context.mounted) return;
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.postSuccess, ModalRoute.withName(AppRoutes.home));
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.postSuccess,
+      ModalRoute.withName(AppRoutes.home),
+    );
   }
 
   @override
@@ -50,7 +54,10 @@ class PostScheduleScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 22),
-          FilledButton(onPressed: () => _publish(context, ref), child: Text(mode == PublicationMode.now ? 'Publier' : 'Confirmer')),
+          FilledButton(
+            onPressed: () => _publish(context, ref),
+            child: Text(mode == PublicationMode.now ? 'Publier' : 'Confirmer'),
+          ),
         ],
       ),
     );

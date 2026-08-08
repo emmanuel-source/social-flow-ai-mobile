@@ -9,9 +9,16 @@ class DraftsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const FutureFeatureScreen(
       title: 'Brouillons',
-      description: 'Conserve les créations incomplètes localement avec Hive et les synchronise avec le backend quand nécessaire.',
+      description:
+          'Conserve les créations incomplètes localement avec Hive et les synchronise avec le backend quand nécessaire.',
       icon: Icons.edit_note_outlined,
-      items: ['Autosave', 'Reprise hors ligne', 'Versions de contenu', 'Brouillons par workspace', 'Nettoyage contrôlé du stockage local'],
+      items: [
+        'Autosave',
+        'Reprise hors ligne',
+        'Versions de contenu',
+        'Brouillons par workspace',
+        'Nettoyage contrôlé du stockage local',
+      ],
     );
   }
 }

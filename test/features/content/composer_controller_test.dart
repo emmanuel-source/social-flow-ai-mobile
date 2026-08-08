@@ -9,8 +9,14 @@ void main() {
     addTearDown(container.dispose);
     final controller = container.read(composerControllerProvider.notifier);
     controller.togglePlatform(SocialPlatform.linkedin);
-    expect(container.read(composerControllerProvider).platforms, contains(SocialPlatform.linkedin));
+    expect(
+      container.read(composerControllerProvider).platforms,
+      contains(SocialPlatform.linkedin),
+    );
     controller.togglePlatform(SocialPlatform.linkedin);
-    expect(container.read(composerControllerProvider).platforms, isNot(contains(SocialPlatform.linkedin)));
+    expect(
+      container.read(composerControllerProvider).platforms,
+      isNot(contains(SocialPlatform.linkedin)),
+    );
   });
 }

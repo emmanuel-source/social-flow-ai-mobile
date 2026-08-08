@@ -10,7 +10,8 @@ class VideoAnalysisScreen extends ConsumerStatefulWidget {
   const VideoAnalysisScreen({super.key});
 
   @override
-  ConsumerState<VideoAnalysisScreen> createState() => _VideoAnalysisScreenState();
+  ConsumerState<VideoAnalysisScreen> createState() =>
+      _VideoAnalysisScreenState();
 }
 
 class _VideoAnalysisScreenState extends ConsumerState<VideoAnalysisScreen> {
@@ -37,13 +38,44 @@ class _VideoAnalysisScreenState extends ConsumerState<VideoAnalysisScreen> {
     return FeatureScaffold(
       title: 'Analyse en cours',
       showBack: false,
-      body: SizedBox(height: 520, child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Stack(alignment: Alignment.center, children: [SizedBox(width: 160, height: 160, child: CircularProgressIndicator(value: job.progress / 100, strokeWidth: 12)), Text('${job.progress}%', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w900))]),
-        const SizedBox(height: 28),
-        Text(label, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
-        const SizedBox(height: 10),
-        const Text('Vous pouvez quitter cet écran : le traitement continuera en arrière-plan.', textAlign: TextAlign.center),
-      ])),
+      body: SizedBox(
+        height: 520,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 160,
+                  height: 160,
+                  child: CircularProgressIndicator(
+                    value: job.progress / 100,
+                    strokeWidth: 12,
+                  ),
+                ),
+                Text(
+                  '${job.progress}%',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 28),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Vous pouvez quitter cet écran : le traitement continuera en arrière-plan.',
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

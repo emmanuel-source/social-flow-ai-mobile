@@ -4,18 +4,24 @@ import '../../data/repositories/mock_auth_repository.dart';
 import '../../domain/entities/user_session.dart';
 import '../../domain/repositories/auth_repository.dart';
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) => MockAuthRepository());
+final authRepositoryProvider = Provider<AuthRepository>(
+  (ref) => MockAuthRepository(),
+);
 
-final authControllerProvider = AsyncNotifierProvider<AuthController, UserSession?>(AuthController.new);
+final authControllerProvider =
+    AsyncNotifierProvider<AuthController, UserSession?>(AuthController.new);
 
 class AuthController extends AsyncNotifier<UserSession?> {
   @override
-  Future<UserSession?> build() => ref.read(authRepositoryProvider).currentSession();
+  Future<UserSession?> build() =>
+      ref.read(authRepositoryProvider).currentSession();
 
   Future<bool> login({required String email, required String password}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).login(email: email, password: password),
+      () => ref
+          .read(authRepositoryProvider)
+          .login(email: email, password: password),
     );
     return !state.hasError;
   }

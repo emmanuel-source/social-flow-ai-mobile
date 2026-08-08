@@ -9,9 +9,16 @@ class PublishingQueueScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const FutureFeatureScreen(
       title: 'File de publication',
-      description: 'Suit les contenus prêts, programmés, en cours de publication, publiés ou en erreur sur chaque réseau.',
+      description:
+          'Suit les contenus prêts, programmés, en cours de publication, publiés ou en erreur sur chaque réseau.',
       icon: Icons.cloud_upload_outlined,
-      items: ['Adaptation par plateforme', 'Validation avant envoi', 'Retries réseau', 'Statut par compte social', 'Journal des erreurs API'],
+      items: [
+        'Adaptation par plateforme',
+        'Validation avant envoi',
+        'Retries réseau',
+        'Statut par compte social',
+        'Journal des erreurs API',
+      ],
     );
   }
 }

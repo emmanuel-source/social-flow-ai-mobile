@@ -23,9 +23,7 @@ class ClipsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 leading: CircleAvatar(child: Text('${index + 1}')),
                 title: Text('Clip ${index + 1} · ${25 + index * 8}s'),
-                subtitle: Text(
-                  'Score viral ${92 - index * 5}% · Hook détecté',
-                ),
+                subtitle: Text('Score viral ${92 - index * 5}% · Hook détecté'),
                 trailing: const Icon(Icons.chevron_right),
               ),
             ),

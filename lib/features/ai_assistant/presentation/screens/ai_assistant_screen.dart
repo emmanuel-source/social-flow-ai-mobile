@@ -9,9 +9,17 @@ class AiAssistantScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const FutureFeatureScreen(
       title: 'Assistant SocialFlow AI',
-      description: 'Assistant transversal pour trouver des idées, rédiger, réécrire, traduire et adapter un contenu selon chaque réseau.',
+      description:
+          'Assistant transversal pour trouver des idées, rédiger, réécrire, traduire et adapter un contenu selon chaque réseau.',
       icon: Icons.auto_awesome,
-      items: ['Idées de contenu', 'Légendes et hashtags', 'Scripts vidéo', 'Traduction', 'Réécriture selon la plateforme', 'Suggestions basées sur les performances'],
+      items: [
+        'Idées de contenu',
+        'Légendes et hashtags',
+        'Scripts vidéo',
+        'Traduction',
+        'Réécriture selon la plateforme',
+        'Suggestions basées sur les performances',
+      ],
     );
   }
 }

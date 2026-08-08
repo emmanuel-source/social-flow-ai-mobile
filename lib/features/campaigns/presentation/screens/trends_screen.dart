@@ -9,7 +9,39 @@ class TrendsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trends = [('Productivité sans burnout', '+186%'), ('Coulisses authentiques', '+94%'), ('Mini tutoriels 30 sec', '+73%')];
-    return FeatureScaffold(title: 'Tendances & idées', subtitle: 'Opportunités adaptées à votre audience', body: Column(children: trends.map((trend) => Padding(padding: const EdgeInsets.only(bottom: 12), child: SectionCard(child: ListTile(contentPadding: EdgeInsets.zero, title: Text(trend.$1), subtitle: Text('Potentiel de croissance ${trend.$2}'), trailing: IconButton(onPressed: () => Navigator.pushNamed(context, AppRoutes.postCaption), icon: const Icon(Icons.add_circle_outline)))))).toList()));
+    final trends = [
+      ('Productivité sans burnout', '+186%'),
+      ('Coulisses authentiques', '+94%'),
+      ('Mini tutoriels 30 sec', '+73%'),
+    ];
+    return FeatureScaffold(
+      title: 'Tendances & idées',
+      subtitle: 'Opportunités adaptées à votre audience',
+      body: Column(
+        children:
+            trends
+                .map(
+                  (trend) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: SectionCard(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(trend.$1),
+                        subtitle: Text('Potentiel de croissance ${trend.$2}'),
+                        trailing: IconButton(
+                          onPressed:
+                              () => Navigator.pushNamed(
+                                context,
+                                AppRoutes.postCaption,
+                              ),
+                          icon: const Icon(Icons.add_circle_outline),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+      ),
+    );
   }
 }

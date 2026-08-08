@@ -8,9 +8,6 @@ class DeepLinkService {
   final AppLinks _appLinks;
 
   StreamSubscription<Uri> start(void Function(Uri uri) onLink) {
-    return _appLinks.uriLinkStream.listen(
-      onLink,
-      onError: (_) {},
-    );
+    return _appLinks.uriLinkStream.listen(onLink, onError: (_) {});
   }
 }

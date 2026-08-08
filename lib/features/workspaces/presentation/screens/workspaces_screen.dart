@@ -10,23 +10,48 @@ class WorkspacesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(workspaceControllerProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Espaces de travail', style: TextStyle(fontWeight: FontWeight.w800))),
+      appBar: AppBar(
+        title: const Text(
+          'Espaces de travail',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(18),
         children: [
-          const Text('Un espace sépare les marques, clients, comptes sociaux, contenus et statistiques.'),
+          const Text(
+            'Un espace sépare les marques, clients, comptes sociaux, contenus et statistiques.',
+          ),
           const SizedBox(height: 16),
-          ...state.available.map((workspace) => Card(
-                child: RadioListTile<String>(
-                  value: workspace.id,
-                  groupValue: state.current.id,
-                  onChanged: (_) => ref.read(workspaceControllerProvider.notifier).select(workspace),
-                  title: Text(workspace.name),
-                  subtitle: Text(workspace.type.name),
-                ),
-              )),
+          RadioGroup<String>(
+            groupValue: state.current.id,
+            onChanged: (workspaceId) {
+              if (workspaceId == null) return;
+              final workspace = state.available.firstWhere(
+                (candidate) => candidate.id == workspaceId,
+              );
+              ref.read(workspaceControllerProvider.notifier).select(workspace);
+            },
+            child: Column(
+              children: state.available
+                  .map(
+                    (workspace) => Card(
+                      child: RadioListTile<String>(
+                        value: workspace.id,
+                        title: Text(workspace.name),
+                        subtitle: Text(workspace.type.name),
+                      ),
+                    ),
+                  )
+                  .toList(growable: false),
+            ),
+          ),
           const SizedBox(height: 12),
-          FilledButton.icon(onPressed: () {}, icon: const Icon(Icons.add), label: const Text('Créer un espace')),
+          FilledButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+            label: const Text('Créer un espace'),
+          ),
         ],
       ),
     );

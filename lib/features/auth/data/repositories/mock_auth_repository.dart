@@ -8,18 +8,33 @@ class MockAuthRepository implements AuthRepository {
   Future<UserSession?> currentSession() async {
     final token = LocalStorage.authToken;
     if (token == null) return null;
-    return UserSession(userId: 'user-001', name: 'Sarah Miller', email: 'sarah@socialflow.ai', accessToken: token);
+    return UserSession(
+      userId: 'user-001',
+      name: 'Sarah Miller',
+      email: 'sarah@socialflow.ai',
+      accessToken: token,
+    );
   }
 
   @override
-  Future<UserSession> login({required String email, required String password}) async {
+  Future<UserSession> login({
+    required String email,
+    required String password,
+  }) async {
     await Future<void>.delayed(const Duration(milliseconds: 650));
     if (email.trim().isEmpty || password.length < 6) {
-      throw const ValidationException('Vérifiez votre e-mail et votre mot de passe.');
+      throw const ValidationException(
+        'Vérifiez votre e-mail et votre mot de passe.',
+      );
     }
     const token = 'demo-access-token';
     await LocalStorage.setAuthToken(token);
-    return UserSession(userId: 'user-001', name: 'Sarah Miller', email: email.trim(), accessToken: token);
+    return UserSession(
+      userId: 'user-001',
+      name: 'Sarah Miller',
+      email: email.trim(),
+      accessToken: token,
+    );
   }
 
   @override

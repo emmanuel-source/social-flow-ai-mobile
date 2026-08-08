@@ -20,14 +20,35 @@ class _VideoConfigScreenState extends State<VideoConfigScreen> {
     return FeatureScaffold(
       title: 'Configuration vidéo',
       subtitle: 'Formats et objectifs',
-      body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Text('Durée cible : ${_duration.round()} secondes'),
-        Slider(value: _duration, min: 15, max: 90, divisions: 15, onChanged: (value) => setState(() => _duration = value)),
-        SwitchListTile(value: _captions, onChanged: (value) => setState(() => _captions = value), title: const Text('Sous-titres automatiques')),
-        SwitchListTile(value: _hooks, onChanged: (value) => setState(() => _hooks = value), title: const Text('Détection des meilleurs hooks')),
-        const SizedBox(height: 20),
-        FilledButton(onPressed: () => Navigator.pushNamed(context, AppRoutes.videoAnalysis), child: const Text("Lancer l'analyse IA")),
-      ]),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('Durée cible : ${_duration.round()} secondes'),
+          Slider(
+            value: _duration,
+            min: 15,
+            max: 90,
+            divisions: 15,
+            onChanged: (value) => setState(() => _duration = value),
+          ),
+          SwitchListTile(
+            value: _captions,
+            onChanged: (value) => setState(() => _captions = value),
+            title: const Text('Sous-titres automatiques'),
+          ),
+          SwitchListTile(
+            value: _hooks,
+            onChanged: (value) => setState(() => _hooks = value),
+            title: const Text('Détection des meilleurs hooks'),
+          ),
+          const SizedBox(height: 20),
+          FilledButton(
+            onPressed:
+                () => Navigator.pushNamed(context, AppRoutes.videoAnalysis),
+            child: const Text("Lancer l'analyse IA"),
+          ),
+        ],
+      ),
     );
   }
 }

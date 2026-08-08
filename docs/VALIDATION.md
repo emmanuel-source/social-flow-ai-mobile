@@ -2,7 +2,7 @@
 
 ## Vérifié dans l'environnement de génération
 
-- 97 fichiers Dart présents ;
+- 132 fichiers Dart présents ;
 - 24 modules sous `lib/features/` ;
 - aucun import Dart relatif ne pointe vers un fichier absent ;
 - les 38 écrans du prototype restent représentés dans les parcours existants ;

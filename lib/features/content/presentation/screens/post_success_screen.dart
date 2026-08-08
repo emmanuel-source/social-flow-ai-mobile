@@ -16,14 +16,48 @@ class PostSuccessScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(radius: 48, backgroundColor: Theme.of(context).colorScheme.primaryContainer, child: Icon(Icons.check, size: 52, color: Theme.of(context).colorScheme.primary)),
+              CircleAvatar(
+                radius: 48,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                child: Icon(
+                  Icons.check,
+                  size: 52,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
               const SizedBox(height: 24),
-              Text('Publication programmée !', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900)),
+              Text(
+                'Publication programmée !',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
               const SizedBox(height: 10),
-              const Text('Votre contenu sera publié automatiquement sur les plateformes sélectionnées.', textAlign: TextAlign.center),
+              const Text(
+                'Votre contenu sera publié automatiquement sur les plateformes sélectionnées.',
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 28),
-              FilledButton(onPressed: () => Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false), child: const Text("Retour à l'accueil")),
-              TextButton.icon(onPressed: () => ref.read(shareServiceProvider).shareText(text: 'Découvrez ma prochaine publication SocialFlow AI !'), icon: const Icon(Icons.share_outlined), label: const Text('Partager')),
+              FilledButton(
+                onPressed:
+                    () => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.home,
+                      (_) => false,
+                    ),
+                child: const Text("Retour à l'accueil"),
+              ),
+              TextButton.icon(
+                onPressed:
+                    () => ref
+                        .read(shareServiceProvider)
+                        .shareText(
+                          text:
+                              'Découvrez ma prochaine publication SocialFlow AI !',
+                        ),
+                icon: const Icon(Icons.share_outlined),
+                label: const Text('Partager'),
+              ),
             ],
           ),
         ),

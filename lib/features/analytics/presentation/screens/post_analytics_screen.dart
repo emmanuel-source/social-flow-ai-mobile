@@ -9,6 +9,24 @@ class PostAnalyticsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const FeatureScaffold(title: 'Analyse de la publication', subtitle: 'Instagram · 7 derniers jours', body: Column(children: [Row(children: [MetricCard(label: 'Vues', value: '42.8K', trend: '+22%'), SizedBox(width: 8), MetricCard(label: 'J’aime', value: '3.9K', trend: '+14%'), SizedBox(width: 8), MetricCard(label: 'Partages', value: '870', trend: '+31%')]), SizedBox(height: 24), PerformanceChart()]));
+    return const FeatureScaffold(
+      title: 'Analyse de la publication',
+      subtitle: 'Instagram · 7 derniers jours',
+      body: Column(
+        children: [
+          Row(
+            children: [
+              MetricCard(label: 'Vues', value: '42.8K', trend: '+22%'),
+              SizedBox(width: 8),
+              MetricCard(label: 'J’aime', value: '3.9K', trend: '+14%'),
+              SizedBox(width: 8),
+              MetricCard(label: 'Partages', value: '870', trend: '+31%'),
+            ],
+          ),
+          SizedBox(height: 24),
+          PerformanceChart(),
+        ],
+      ),
+    );
   }
 }
