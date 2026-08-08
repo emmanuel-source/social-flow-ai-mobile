@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_spacing.dart';
+import 'app_card.dart';
+
 class MetricCard extends StatelessWidget {
   const MetricCard({
     required this.label,
@@ -14,22 +18,35 @@ class MetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final positive = !trend.trimLeft().startsWith('-');
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-        ),
+      child: AppCard(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        semanticLabel: '$label, $value, évolution $trend',
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: Theme.of(context).textTheme.labelSmall),
-            const SizedBox(height: 6),
-            Text(value, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
-            const SizedBox(height: 3),
-            Text(trend, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.green)),
+            Text(
+              label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(value, style: Theme.of(context).textTheme.titleLarge),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              trend,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: positive ? AppColors.success : AppColors.danger,
+              ),
+            ),
           ],
         ),
       ),

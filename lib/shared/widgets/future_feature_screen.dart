@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_gradients.dart';
+import '../../core/theme/app_radius.dart';
+import '../../core/theme/app_sizes.dart';
+import '../../core/theme/app_spacing.dart';
+import 'section_header.dart';
+
 class FutureFeatureScreen extends StatelessWidget {
   const FutureFeatureScreen({
     required this.title,
@@ -17,40 +24,63 @@ class FutureFeatureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800))),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-        children: [
-          Container(
-            padding: const EdgeInsets.all(22),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              gradient: const LinearGradient(
-                colors: [Color(0xFF11143B), Color(0xFF6D28D9), Color(0xFF2563EB)],
+      appBar: AppBar(title: Text(title)),
+      body: SafeArea(
+        top: false,
+        child: ListView(
+          padding: AppSpacing.screenInsets,
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppSizes.contentMaxWidth,
+              ),
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  borderRadius: AppRadius.modal,
+                  gradient: AppGradients.ai,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.xxl),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        icon,
+                        size: AppSizes.iconHero,
+                        color: AppColors.white,
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(color: AppColors.white),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.white.withValues(alpha: 0.82),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(icon, size: 38, color: Colors.white),
-                const SizedBox(height: 16),
-                Text(title, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900)),
-                const SizedBox(height: 8),
-                Text(description, style: const TextStyle(color: Colors.white70, height: 1.4)),
-              ],
-            ),
-          ),
-          if (items.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            Text('Périmètre du module', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
-            const SizedBox(height: 8),
-            ...items.map((item) => ListTile(
+            if (items.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.xl),
+              const SectionHeader(title: 'Périmètre du module'),
+              const SizedBox(height: AppSpacing.sm),
+              ...items.map(
+                (item) => ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.check_circle_outline),
                   title: Text(item),
-                )),
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

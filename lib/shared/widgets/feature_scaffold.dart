@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_sizes.dart';
+import '../../core/theme/app_spacing.dart';
+
 class FeatureScaffold extends StatelessWidget {
   const FeatureScaffold({
     required this.title,
@@ -26,11 +29,15 @@ class FeatureScaffold extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
+            Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
             if (subtitle != null)
               Text(
                 subtitle!,
-                style: Theme.of(context).textTheme.bodySmall,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
           ],
         ),
@@ -39,8 +46,15 @@ class FeatureScaffold extends StatelessWidget {
       body: SafeArea(
         top: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(18, 12, 18, 30),
-          child: body,
+          padding: AppSpacing.screenInsets,
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppSizes.contentMaxWidth,
+              ),
+              child: body,
+            ),
+          ),
         ),
       ),
       floatingActionButton: floatingActionButton,

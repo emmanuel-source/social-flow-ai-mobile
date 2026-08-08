@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_spacing.dart';
+import 'app_card.dart';
+
 class SectionCard extends StatelessWidget {
   const SectionCard({
     required this.child,
-    this.padding = const EdgeInsets.all(16),
+    this.padding = const EdgeInsets.all(AppSpacing.cardPadding),
     this.onTap,
     super.key,
   });
@@ -14,16 +17,6 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final card = Container(
-      width: double.infinity,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-      ),
-      child: child,
-    );
-    return onTap == null ? card : InkWell(onTap: onTap, borderRadius: BorderRadius.circular(20), child: card);
+    return AppCard(onTap: onTap, padding: padding, child: child);
   }
 }
