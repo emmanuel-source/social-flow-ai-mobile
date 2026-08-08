@@ -1,65 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/app_routes.dart';
-import '../../../../shared/widgets/section_card.dart';
+import '../../../../shared/widgets/app_loader.dart';
+import '../../../../shared/widgets/app_state_view.dart';
+import '../controllers/calendar_controller.dart';
+import '../widgets/calendar_content.dart';
 
-class CalendarScreen extends StatelessWidget {
+class CalendarScreen extends ConsumerWidget {
   const CalendarScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final calendar = ref.watch(calendarControllerProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Calendrier',
-          style: TextStyle(fontWeight: FontWeight.w800),
+      body: SafeArea(
+        bottom: false,
+        child: calendar.when(
+          loading:
+              () => const AppLoader(
+                key: Key('calendar-loading'),
+                label: 'Chargement du calendrier éditorial',
+              ),
+          error:
+              (error, stackTrace) => AppErrorState(
+                key: const Key('calendar-error'),
+                title: 'Le calendrier est indisponible',
+                message: 'Impossible de charger votre planning pour le moment.',
+                onRetry: ref.read(calendarControllerProvider.notifier).reload,
+              ),
+          data:
+              (state) => CalendarContent(
+                state: state,
+                controller: ref.read(calendarControllerProvider.notifier),
+                onCreate:
+                    () => Navigator.pushNamed(context, AppRoutes.postType),
+                onEntry:
+                    () =>
+                        Navigator.pushNamed(context, AppRoutes.calendarDetail),
+              ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.pushNamed(context, AppRoutes.postType),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(18, 8, 18, 30),
-        children: [
-          CalendarDatePicker(
-            initialDate: DateTime.now(),
-            firstDate: DateTime.now().subtract(const Duration(days: 365)),
-            lastDate: DateTime.now().add(const Duration(days: 730)),
-            onDateChanged: (_) {},
-          ),
-          const SizedBox(height: 14),
-          Text(
-            "Aujourd'hui",
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 10),
-          SectionCard(
-            onTap: () => Navigator.pushNamed(context, AppRoutes.calendarDetail),
-            child: const ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(child: Text('10')),
-              title: Text('5 astuces productivité'),
-              subtitle: Text('Instagram · 10:00'),
-              trailing: Chip(label: Text('Programmé')),
-            ),
-          ),
-          const SizedBox(height: 10),
-          SectionCard(
-            onTap: () => Navigator.pushNamed(context, AppRoutes.calendarDetail),
-            child: const ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(child: Text('14')),
-              title: Text('Coulisses du podcast'),
-              subtitle: Text('TikTok · 14:30'),
-              trailing: Chip(label: Text('À valider')),
-            ),
-          ),
-        ],
       ),
     );
   }
