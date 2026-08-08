@@ -11,8 +11,12 @@ abstract final class LocalStorage {
   static late Box<dynamic> drafts;
   static late Box<dynamic> jobs;
 
-  static Future<void> initialize() async {
-    await Hive.initFlutter();
+  static Future<void> initialize({String? path}) async {
+    if (path == null) {
+      await Hive.initFlutter();
+    } else {
+      Hive.init(path);
+    }
     _settings = await Hive.openBox<dynamic>(_settingsBoxName);
     _auth = await Hive.openBox<dynamic>(_authBoxName);
     drafts = await Hive.openBox<dynamic>(_draftsBoxName);
@@ -28,8 +32,10 @@ abstract final class LocalStorage {
     }
   }
 
-  static bool get darkMode => _settings.get('dark_mode', defaultValue: false) as bool;
-  static Future<void> setDarkMode(bool value) => _settings.put('dark_mode', value);
+  static bool get darkMode =>
+      _settings.get('dark_mode', defaultValue: false) as bool;
+  static Future<void> setDarkMode(bool value) =>
+      _settings.put('dark_mode', value);
 
   static bool get onboardingCompleted =>
       _settings.get('onboarding_completed', defaultValue: false) as bool;

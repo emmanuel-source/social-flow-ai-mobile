@@ -1,6 +1,7 @@
 .dart_tool/
 .packages
 .pub/
+.pub-cache/
 build/
 coverage/
 .flutter-plugins
@@ -14,3 +15,12 @@ ios/.symlinks/
 .env
 .env.*
 !.env.example
+
+# Flutter build and symbolication outputs
+**/doc/api/
+**/ios/Flutter/.last_build_id
+app.*.symbols
+app.*.map.json
+/android/app/debug
+/android/app/profile
+/android/app/release

@@ -2,22 +2,30 @@
 set -euo pipefail
 
 if ! command -v flutter >/dev/null 2>&1; then
-  echo "Flutter n'est pas installé ou n'est pas dans le PATH." >&2
+  echo "Flutter n'est pas installe ou n'est pas dans PATH." >&2
   exit 1
 fi
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-TMP="$(mktemp -d)"
-cp -R "$ROOT/lib" "$TMP/lib"
-cp "$ROOT/pubspec.yaml" "$TMP/pubspec.yaml"
-cp "$ROOT/analysis_options.yaml" "$TMP/analysis_options.yaml"
+
+for required_path in pubspec.yaml android ios web; do
+  if [[ ! -e "$ROOT/$required_path" ]]; then
+    echo "Structure Flutter incomplete : '$required_path' est absent. Restaurez-le depuis Git avant de continuer." >&2
+    exit 1
+  fi
+done
 
 cd "$ROOT"
-flutter create --org com.socialflowai --platforms=android,ios,web .
-rm -rf "$ROOT/lib"
-cp -R "$TMP/lib" "$ROOT/lib"
-cp "$TMP/pubspec.yaml" "$ROOT/pubspec.yaml"
-cp "$TMP/analysis_options.yaml" "$ROOT/analysis_options.yaml"
+flutter --version
+dart --version
 flutter pub get
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test
 
-echo "Plateformes générées. Configurez maintenant les deep links selon docs/DEEP_LINKS_SETUP.md."
+if [[ "${1:-}" == "--build" ]]; then
+  flutter build web
+  flutter build apk --debug
+fi
+
+echo "Fondation Flutter validee."
