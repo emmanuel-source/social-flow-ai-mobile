@@ -1,69 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/app_routes.dart';
-import '../../../../shared/widgets/metric_card.dart';
-import '../../../../shared/widgets/section_card.dart';
-import '../widgets/performance_chart.dart';
+import '../../../../shared/widgets/app_loader.dart';
+import '../../../../shared/widgets/app_state_view.dart';
+import '../controllers/analytics_controller.dart';
+import '../widgets/analytics_dashboard_content.dart';
 
-class AnalyticsScreen extends StatelessWidget {
+class AnalyticsScreen extends ConsumerWidget {
   const AnalyticsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dashboard = ref.watch(analyticsControllerProvider);
+    final controller = ref.read(analyticsControllerProvider.notifier);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Statistiques',
-          style: TextStyle(fontWeight: FontWeight.w800),
+      body: SafeArea(
+        bottom: false,
+        child: dashboard.when(
+          loading:
+              () => const AppLoader(
+                key: Key('analytics-loading'),
+                label: 'Chargement des statistiques',
+              ),
+          error:
+              (error, stackTrace) => AppErrorState(
+                key: const Key('analytics-error'),
+                title: 'Les statistiques sont indisponibles',
+                message:
+                    'Impossible de charger vos performances pour le moment.',
+                onRetry: controller.reload,
+              ),
+          data: (data) {
+            if (data.isEmpty) {
+              return AppEmptyState(
+                key: const Key('analytics-empty'),
+                title: 'Pas encore assez de données',
+                message:
+                    'Publiez du contenu pour commencer à mesurer vos performances.',
+                icon: Icons.query_stats_outlined,
+                actionLabel: 'Créer une publication',
+                onAction:
+                    () => Navigator.pushNamed(context, AppRoutes.postType),
+              );
+            }
+            return AnalyticsDashboardContent(
+              dashboard: data,
+              onPeriodSelected: controller.selectPeriod,
+              onTopContent:
+                  () => Navigator.pushNamed(context, AppRoutes.postAnalytics),
+              onCreate: () => Navigator.pushNamed(context, AppRoutes.postType),
+            );
+          },
         ),
-        actions: [
-          IconButton(
-            onPressed:
-                () => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Rapport PDF généré.')),
-                ),
-            icon: const Icon(Icons.download_outlined),
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(18, 8, 18, 30),
-        children: [
-          const Row(
-            children: [
-              MetricCard(label: 'Vues', value: '128K', trend: '+18.6%'),
-              SizedBox(width: 8),
-              MetricCard(label: 'Engagement', value: '8.4%', trend: '+2.1%'),
-              SizedBox(width: 8),
-              MetricCard(label: 'Abonnés', value: '+2.8K', trend: '+12%'),
-            ],
-          ),
-          const SizedBox(height: 18),
-          const SectionCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Performance sur 7 jours',
-                  style: TextStyle(fontWeight: FontWeight.w800),
-                ),
-                SizedBox(height: 18),
-                PerformanceChart(),
-              ],
-            ),
-          ),
-          const SizedBox(height: 14),
-          SectionCard(
-            onTap: () => Navigator.pushNamed(context, AppRoutes.postAnalytics),
-            child: const ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(child: Text('IG')),
-              title: Text('5 astuces productivité'),
-              subtitle: Text('42.8K vues · 9.7% engagement'),
-              trailing: Icon(Icons.chevron_right),
-            ),
-          ),
-        ],
       ),
     );
   }
