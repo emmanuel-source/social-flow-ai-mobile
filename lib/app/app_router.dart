@@ -25,6 +25,7 @@ import '../features/content/presentation/screens/caption_screen.dart';
 import '../features/content/presentation/screens/composer_screen.dart';
 import '../features/content/presentation/screens/platforms_screen.dart';
 import '../features/content/presentation/screens/platform_adaptation_screen.dart';
+import '../features/content/presentation/screens/post_preview_screen.dart';
 import '../features/content/presentation/screens/post_schedule_screen.dart';
 import '../features/content/presentation/screens/post_success_screen.dart';
 import '../features/content/presentation/screens/post_type_screen.dart';
@@ -84,11 +85,12 @@ abstract final class AppRouter {
               AppRoutes.postCaption => const CaptionScreen(),
               AppRoutes.postPlatforms => const PlatformsScreen(),
               AppRoutes.postAdapt => const PlatformAdaptationScreen(),
-              AppRoutes.postPreview => const FutureFeatureScreen(
-                title: 'Preview multiréseaux',
+              AppRoutes.postPreview => const PostPreviewScreen(),
+              AppRoutes.postPublish => const FutureFeatureScreen(
+                title: 'Publier ou programmer',
                 description:
-                    'Les variantes seront prévisualisées réseau par réseau dans SFA-PUB-005.',
-                icon: Icons.preview_outlined,
+                    'Le choix de publication sera disponible dans SFA-PUB-006.',
+                icon: Icons.send_outlined,
               ),
               AppRoutes.postSchedule => const PostScheduleScreen(),
               AppRoutes.postSuccess => const PostSuccessScreen(),

@@ -11,6 +11,7 @@ import '../../../../shared/widgets/section_header.dart';
 import '../../../../shared/widgets/social_network_card.dart';
 import '../../domain/entities/social_post.dart';
 import '../controllers/composer_controller.dart';
+import '../models/demo_social_account.dart';
 
 class PlatformsScreen extends ConsumerWidget {
   const PlatformsScreen({this.onContinue, this.onConnect, super.key});
@@ -18,44 +19,12 @@ class PlatformsScreen extends ConsumerWidget {
   final ValueChanged<SocialPost>? onContinue;
   final ValueChanged<SocialPlatform>? onConnect;
 
-  static const _demoAccounts = <_DemoSocialAccount>[
-    _DemoSocialAccount(
-      platform: SocialPlatform.instagram,
-      accountLabel: '@socialflow',
-      connected: true,
-    ),
-    _DemoSocialAccount(
-      platform: SocialPlatform.facebook,
-      accountLabel: 'Social Flow AI',
-      connected: true,
-    ),
-    _DemoSocialAccount(
-      platform: SocialPlatform.tiktok,
-      accountLabel: '@socialflow',
-      connected: true,
-    ),
-    _DemoSocialAccount(
-      platform: SocialPlatform.youtube,
-      accountLabel: 'Social Flow AI',
-      connected: true,
-    ),
-    _DemoSocialAccount(
-      platform: SocialPlatform.linkedin,
-      accountLabel: 'Social Flow AI',
-      connected: true,
-    ),
-    _DemoSocialAccount(platform: SocialPlatform.x),
-    _DemoSocialAccount(platform: SocialPlatform.threads),
-    _DemoSocialAccount(platform: SocialPlatform.pinterest),
-    _DemoSocialAccount(platform: SocialPlatform.snapchat),
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(composerControllerProvider);
     final available = {
-      for (final account in _demoAccounts)
-        if (account.connected && account.compatible) account.platform,
+      for (final account in demoSocialAccounts)
+        if (account.connected) account.platform,
     };
     final selected = post.platforms.intersection(available);
     final allSelected =
@@ -110,14 +79,14 @@ class PlatformsScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          for (var index = 0; index < _demoAccounts.length; index++) ...[
+          for (var index = 0; index < demoSocialAccounts.length; index++) ...[
             _buildAccountCard(
               context,
               ref,
-              _demoAccounts[index],
-              selected.contains(_demoAccounts[index].platform),
+              demoSocialAccounts[index],
+              selected.contains(demoSocialAccounts[index].platform),
             ),
-            if (index < _demoAccounts.length - 1)
+            if (index < demoSocialAccounts.length - 1)
               const SizedBox(height: AppSpacing.sm),
           ],
           const SizedBox(height: AppSpacing.xxl),
@@ -148,20 +117,18 @@ class PlatformsScreen extends ConsumerWidget {
   Widget _buildAccountCard(
     BuildContext context,
     WidgetRef ref,
-    _DemoSocialAccount account,
+    DemoSocialAccount account,
     bool selected,
   ) {
     return SocialNetworkCard(
       key: Key('platform-${account.platform.name}'),
       platform: account.platform,
-      accountLabel:
-          account.connected ? account.accountLabel : 'Aucun compte connecté',
+      accountLabel: account.accountLabel,
       connected: account.connected,
-      compatible: account.compatible,
       selected: selected,
       compact: true,
       onTap:
-          account.connected && account.compatible
+          account.connected
               ? () => ref
                   .read(composerControllerProvider.notifier)
                   .togglePlatform(account.platform)
@@ -192,17 +159,4 @@ class PlatformsScreen extends ConsumerWidget {
     }
     Navigator.pushNamed(context, AppRoutes.postAdapt);
   }
-}
-
-class _DemoSocialAccount {
-  const _DemoSocialAccount({
-    required this.platform,
-    this.accountLabel,
-    this.connected = false,
-  });
-
-  final SocialPlatform platform;
-  final String? accountLabel;
-  final bool connected;
-  final bool compatible = true;
 }

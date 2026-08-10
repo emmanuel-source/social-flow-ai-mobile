@@ -250,13 +250,18 @@ class _PlatformAdaptationScreenState
     );
   }
 
-  void _continue(SocialPost post) {
+  Future<void> _continue(SocialPost post) async {
     final callback = widget.onContinue;
     if (callback != null) {
       callback(post);
       return;
     }
-    Navigator.pushNamed(context, AppRoutes.postPreview);
+    final platform = await Navigator.pushNamed(context, AppRoutes.postPreview);
+    if (!mounted || platform is! SocialPlatform) return;
+    final latestPost = ref.read(composerControllerProvider);
+    if (latestPost.platforms.contains(platform)) {
+      _selectPlatform(platform, latestPost);
+    }
   }
 
   PlatformPostVariant? _activeVariant(SocialPost post) {
