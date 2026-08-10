@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../features/analytics/presentation/screens/analytics_screen.dart';
+import '../features/auth/presentation/controllers/auth_controller.dart';
 import '../features/calendar/presentation/screens/calendar_screen.dart';
 import '../features/content/presentation/screens/create_hub_screen.dart';
 import '../features/home/presentation/screens/home_screen.dart';
@@ -56,13 +58,24 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   late int _index = _indexForRoute(widget.initialRoute);
 
-  static const _defaultPages = <Widget>[
-    HomeScreen(),
-    CreateHubScreen(),
-    CalendarScreen(),
-    AnalyticsScreen(),
-    ProfileScreen(),
+  List<Widget> get _defaultPages => <Widget>[
+    const HomeScreen(),
+    const CreateHubScreen(),
+    const CalendarScreen(),
+    const AnalyticsScreen(),
+    ProfileScreen(onLogout: _logout),
   ];
+
+  Future<void> _logout() async {
+    await ProviderScope.containerOf(
+      context,
+    ).read(authControllerProvider.notifier).logout();
+    if (!mounted) return;
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamedAndRemoveUntil(AppRoutes.login, (_) => false);
+  }
 
   static int _indexForRoute(String route) {
     final index = AppRoutes.mainIndexForRoute(route);

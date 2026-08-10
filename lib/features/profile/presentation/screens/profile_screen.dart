@@ -2,111 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/app_routes.dart';
-import '../../../auth/presentation/controllers/auth_controller.dart';
-import '../../../workspaces/presentation/controllers/workspace_controller.dart';
+import '../../../../shared/widgets/app_dialog.dart';
+import '../../../../shared/widgets/app_loader.dart';
+import '../../../../shared/widgets/app_state_view.dart';
+import '../controllers/profile_controller.dart';
+import '../widgets/profile_content.dart';
 
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({required this.onLogout, super.key});
+
+  final Future<void> Function() onLogout;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final workspace = ref.watch(workspaceControllerProvider).current;
+    final profile = ref.watch(profileControllerProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Profil',
-          style: TextStyle(fontWeight: FontWeight.w800),
+      body: SafeArea(
+        bottom: false,
+        child: profile.when(
+          loading:
+              () => const AppLoader(
+                key: Key('profile-loading'),
+                label: 'Chargement du profil',
+              ),
+          error:
+              (error, stackTrace) => AppErrorState(
+                key: const Key('profile-error'),
+                title: 'Le profil est indisponible',
+                message:
+                    'Impossible de charger vos informations pour le moment.',
+                onRetry: ref.read(profileControllerProvider.notifier).reload,
+              ),
+          data:
+              (overview) => ProfileContent(
+                overview: overview,
+                onWorkspace: () => _open(context, AppRoutes.workspaces),
+                onSocialAccounts: () => _open(context, AppRoutes.accounts),
+                onBrandKit: () => _open(context, AppRoutes.brandKit),
+                onTeam: () => _open(context, AppRoutes.team),
+                onApprovals: () => _open(context, AppRoutes.approvals),
+                onAgents: () => _open(context, AppRoutes.agents),
+                onSubscription: () => _open(context, AppRoutes.subscription),
+                onNotifications: () => _open(context, AppRoutes.notifications),
+                onSecurity: () => _open(context, AppRoutes.security),
+                onSettings: () => _open(context, AppRoutes.settings),
+                onLogout: () => _confirmLogout(context),
+              ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(18, 8, 18, 30),
-        children: [
-          const Center(
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 46,
-                  child: Text(
-                    'SM',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-                  ),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Sarah Miller',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
-                ),
-                Text('SocialFlow AI'),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          ListTile(
-            leading: const Icon(Icons.workspaces_outline),
-            title: const Text('Espace de travail'),
-            subtitle: Text(workspace.name),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.workspaces),
-          ),
-          ListTile(
-            leading: const Icon(Icons.link),
-            title: const Text('Comptes sociaux'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.accounts),
-          ),
-          ListTile(
-            leading: const Icon(Icons.groups_outlined),
-            title: const Text('Équipe et permissions'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.team),
-          ),
-          ListTile(
-            leading: const Icon(Icons.fact_check_outlined),
-            title: const Text('Validations'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.approvals),
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications_none),
-            title: const Text('Notifications'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.notifications),
-          ),
-          ListTile(
-            leading: const Icon(Icons.workspace_premium_outlined),
-            title: const Text('Abonnement'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.subscription),
-          ),
-          ListTile(
-            leading: const Icon(Icons.security_outlined),
-            title: const Text('Sécurité'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.security),
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings_outlined),
-            title: const Text('Paramètres'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.pushNamed(context, AppRoutes.settings),
-          ),
-          const SizedBox(height: 18),
-          OutlinedButton.icon(
-            onPressed: () async {
-              await ref.read(authControllerProvider.notifier).logout();
-              if (context.mounted) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.login,
-                  (_) => false,
-                );
-              }
-            },
-            icon: const Icon(Icons.logout),
-            label: const Text('Se déconnecter'),
-          ),
-        ],
-      ),
     );
+  }
+
+  void _open(BuildContext context, String route) =>
+      Navigator.pushNamed(context, route);
+
+  Future<void> _confirmLogout(BuildContext context) async {
+    final confirmed = await AppDialog.confirm(
+      context: context,
+      title: 'Se déconnecter ?',
+      message:
+          'Vous devrez vous reconnecter pour accéder à votre espace de travail.',
+      confirmLabel: 'Se déconnecter',
+      destructive: true,
+    );
+    if (confirmed == true) await onLogout();
   }
 }
