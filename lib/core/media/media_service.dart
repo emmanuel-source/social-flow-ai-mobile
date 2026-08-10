@@ -9,8 +9,12 @@ class MediaService {
 
   final ImagePicker _picker;
 
+  Future<XFile?> pickImage() {
+    return _picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+  }
+
   Future<List<XFile>> pickImages() {
-    return _picker.pickMultiImage(imageQuality: 100, limit: 10);
+    return _picker.pickMultiImage(imageQuality: 100);
   }
 
   Future<XFile?> pickVideo() {

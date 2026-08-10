@@ -21,6 +21,12 @@ class SocialPost {
   final PublicationMode mode;
   final DateTime? scheduledAt;
 
+  bool get hasValidSourceContent => switch (type) {
+    PostType.text => caption.trim().isNotEmpty,
+    PostType.image || PostType.video => mediaPaths.isNotEmpty,
+    PostType.carousel => mediaPaths.length >= 2,
+  };
+
   SocialPost copyWith({
     PostType? type,
     String? caption,

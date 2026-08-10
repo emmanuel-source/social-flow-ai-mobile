@@ -22,7 +22,7 @@ import '../features/calendar/presentation/screens/calendar_detail_screen.dart';
 import '../features/campaigns/presentation/screens/campaign_screen.dart';
 import '../features/campaigns/presentation/screens/trends_screen.dart';
 import '../features/content/presentation/screens/caption_screen.dart';
-import '../features/content/presentation/screens/media_picker_screen.dart';
+import '../features/content/presentation/screens/composer_screen.dart';
 import '../features/content/presentation/screens/platforms_screen.dart';
 import '../features/content/presentation/screens/post_preview_screen.dart';
 import '../features/content/presentation/screens/post_schedule_screen.dart';
@@ -79,7 +79,7 @@ abstract final class AppRouter {
               AppRoutes.login => const LoginScreen(),
               AppRoutes.register => const RegisterScreen(),
               AppRoutes.postType => const PostTypeScreen(),
-              AppRoutes.postMedia => const MediaPickerScreen(),
+              AppRoutes.postMedia => const ComposerScreen(),
               AppRoutes.postCaption => const CaptionScreen(),
               AppRoutes.postPlatforms => const PlatformsScreen(),
               AppRoutes.postPreview => const PostPreviewScreen(),

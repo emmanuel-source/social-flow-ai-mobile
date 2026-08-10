@@ -15,19 +15,17 @@ class ComposerController extends Notifier<SocialPost> {
   @override
   SocialPost build() => const SocialPost(
     type: PostType.image,
-    caption:
-        'Découvrez 5 astuces simples pour booster votre productivité au quotidien ! 🚀',
-    platforms: {
-      SocialPlatform.instagram,
-      SocialPlatform.facebook,
-      SocialPlatform.tiktok,
-      SocialPlatform.youtube,
-    },
+    caption: '',
+    platforms: {},
     mediaPaths: [],
-    mode: PublicationMode.scheduled,
+    mode: PublicationMode.draft,
   );
 
-  void setType(PostType value) => state = state.copyWith(type: value);
+  void setType(PostType value) {
+    if (state.type == value) return;
+    state = state.copyWith(type: value, mediaPaths: const []);
+  }
+
   void setCaption(String value) => state = state.copyWith(caption: value);
   void improveCaption() => setCaption(
     '5 astuces simples mais puissantes pour booster votre productivité chaque jour ! 🚀 Dites-moi celle que vous allez tester 👇',
@@ -36,7 +34,29 @@ class ComposerController extends Notifier<SocialPost> {
     '5 astuces pour booster votre productivité dès aujourd’hui 🚀',
   );
   void setMedia(List<String> paths) =>
-      state = state.copyWith(mediaPaths: paths);
+      state = state.copyWith(mediaPaths: List.unmodifiable(paths));
+
+  void addMedia(Iterable<String> paths) =>
+      setMedia([...state.mediaPaths, ...paths]);
+
+  void removeMediaAt(int index) {
+    final paths = [...state.mediaPaths]..removeAt(index);
+    setMedia(paths);
+  }
+
+  void replaceMediaAt(int index, String path) {
+    final paths = [...state.mediaPaths]..[index] = path;
+    setMedia(paths);
+  }
+
+  void moveMedia(int oldIndex, int newIndex) {
+    if (oldIndex == newIndex) return;
+    final paths = [...state.mediaPaths];
+    final item = paths.removeAt(oldIndex);
+    paths.insert(newIndex, item);
+    setMedia(paths);
+  }
+
   void togglePlatform(SocialPlatform platform) {
     final next = {...state.platforms};
     next.contains(platform) ? next.remove(platform) : next.add(platform);
