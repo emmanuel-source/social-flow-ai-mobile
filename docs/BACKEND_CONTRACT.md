@@ -46,6 +46,19 @@ Le mobile ne doit pas être la source de vérité des tokens sociaux.
 
 Une publication doit retourner un statut global et des statuts par plateforme/compte.
 
+Le workflow Flutter prépare actuellement une intention typée `PublishIntent`
+sans effectuer de requête. Le futur point d’intégration recevra conceptuellement :
+
+- le `SocialPost` et ses `PlatformPostVariant` actives ;
+- le mode `now` ou `scheduled` ;
+- `scheduledAt` lorsque le mode est programmé ;
+- le fuseau horaire explicite associé ;
+- les plateformes sélectionnées.
+
+La réponse serveur et les identifiants distants ne font pas partie du modèle
+Flutter actuel. Le simulateur UI-first devra être remplacé par une implémentation
+du contrat de soumission, sans modification des écrans.
+
 ## Calendrier
 
 - `GET /workspaces/{workspace_id}/calendar?from=&to=`

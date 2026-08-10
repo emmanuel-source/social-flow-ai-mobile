@@ -14,13 +14,18 @@ final composerControllerProvider =
 
 class ComposerController extends Notifier<SocialPost> {
   @override
-  SocialPost build() => const SocialPost(
+  SocialPost build() => _emptyPost;
+
+  static const _emptyPost = SocialPost(
     type: PostType.image,
     caption: '',
     platforms: {},
     mediaPaths: [],
     mode: PublicationMode.draft,
   );
+
+  /// Clears the active draft only after a completed publishing simulation.
+  void reset() => state = _emptyPost;
 
   void setType(PostType value) {
     if (state.type == value) return;

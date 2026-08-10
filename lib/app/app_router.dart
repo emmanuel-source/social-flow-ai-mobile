@@ -26,7 +26,7 @@ import '../features/content/presentation/screens/composer_screen.dart';
 import '../features/content/presentation/screens/platforms_screen.dart';
 import '../features/content/presentation/screens/platform_adaptation_screen.dart';
 import '../features/content/presentation/screens/post_preview_screen.dart';
-import '../features/content/presentation/screens/post_schedule_screen.dart';
+import '../features/content/presentation/screens/post_publish_screen.dart';
 import '../features/content/presentation/screens/post_success_screen.dart';
 import '../features/content/presentation/screens/post_type_screen.dart';
 import '../features/drafts/presentation/screens/drafts_screen.dart';
@@ -49,7 +49,6 @@ import '../features/video_studio/presentation/screens/video_source_screen.dart';
 import '../features/video_studio/presentation/screens/youtube_import_screen.dart';
 import '../features/workspaces/presentation/screens/workspaces_screen.dart';
 import '../shared/widgets/app_buttons.dart';
-import '../shared/widgets/future_feature_screen.dart';
 import 'app_routes.dart';
 import 'app_shell.dart';
 
@@ -86,13 +85,9 @@ abstract final class AppRouter {
               AppRoutes.postPlatforms => const PlatformsScreen(),
               AppRoutes.postAdapt => const PlatformAdaptationScreen(),
               AppRoutes.postPreview => const PostPreviewScreen(),
-              AppRoutes.postPublish => const FutureFeatureScreen(
-                title: 'Publier ou programmer',
-                description:
-                    'Le choix de publication sera disponible dans SFA-PUB-006.',
-                icon: Icons.send_outlined,
-              ),
-              AppRoutes.postSchedule => const PostScheduleScreen(),
+              AppRoutes.postPublish => const PostPublishScreen(),
+              // Backward-compatible route for the former prototype step.
+              AppRoutes.postSchedule => const PostPublishScreen(),
               AppRoutes.postSuccess => const PostSuccessScreen(),
               AppRoutes.videoSource => const VideoSourceScreen(),
               AppRoutes.youtubeImport => const YoutubeImportScreen(),
