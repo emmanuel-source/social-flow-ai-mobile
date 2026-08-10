@@ -24,7 +24,7 @@ import '../features/campaigns/presentation/screens/trends_screen.dart';
 import '../features/content/presentation/screens/caption_screen.dart';
 import '../features/content/presentation/screens/composer_screen.dart';
 import '../features/content/presentation/screens/platforms_screen.dart';
-import '../features/content/presentation/screens/post_preview_screen.dart';
+import '../features/content/presentation/screens/platform_adaptation_screen.dart';
 import '../features/content/presentation/screens/post_schedule_screen.dart';
 import '../features/content/presentation/screens/post_success_screen.dart';
 import '../features/content/presentation/screens/post_type_screen.dart';
@@ -83,13 +83,13 @@ abstract final class AppRouter {
               AppRoutes.postMedia => const ComposerScreen(),
               AppRoutes.postCaption => const CaptionScreen(),
               AppRoutes.postPlatforms => const PlatformsScreen(),
-              AppRoutes.postAdapt => const FutureFeatureScreen(
-                title: 'Adaptation par plateforme',
+              AppRoutes.postAdapt => const PlatformAdaptationScreen(),
+              AppRoutes.postPreview => const FutureFeatureScreen(
+                title: 'Preview multiréseaux',
                 description:
-                    'Le contenu source sera adapté à chaque réseau dans SFA-PUB-004.',
-                icon: Icons.tune,
+                    'Les variantes seront prévisualisées réseau par réseau dans SFA-PUB-005.',
+                icon: Icons.preview_outlined,
               ),
-              AppRoutes.postPreview => const PostPreviewScreen(),
               AppRoutes.postSchedule => const PostScheduleScreen(),
               AppRoutes.postSuccess => const PostSuccessScreen(),
               AppRoutes.videoSource => const VideoSourceScreen(),

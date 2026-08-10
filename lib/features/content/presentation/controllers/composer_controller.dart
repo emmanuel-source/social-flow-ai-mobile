@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../shared/models/social_platform.dart';
 import '../../data/repositories/local_content_repository.dart';
+import '../../domain/entities/platform_post_variant.dart';
 import '../../domain/entities/social_post.dart';
 import '../../domain/repositories/content_repository.dart';
 
@@ -26,7 +27,24 @@ class ComposerController extends Notifier<SocialPost> {
     state = state.copyWith(type: value, mediaPaths: const []);
   }
 
-  void setCaption(String value) => state = state.copyWith(caption: value);
+  void setCaption(String value) {
+    final previousSource = state.caption;
+    final synchronized = <SocialPlatform, PlatformPostVariant>{
+      for (final entry in state.platformVariants.entries)
+        entry.key:
+            entry.value.matchesSource(previousSource)
+                ? PlatformPostVariant.fromSource(
+                  platform: entry.key,
+                  sourceCaption: value,
+                )
+                : entry.value,
+    };
+    state = state.copyWith(
+      caption: value,
+      platformVariants: Map.unmodifiable(synchronized),
+    );
+  }
+
   void improveCaption() => setCaption(
     '5 astuces simples mais puissantes pour booster votre productivité chaque jour ! 🚀 Dites-moi celle que vous allez tester 👇',
   );
@@ -63,8 +81,54 @@ class ComposerController extends Notifier<SocialPost> {
     setPlatforms(next);
   }
 
-  void setPlatforms(Set<SocialPlatform> platforms) =>
-      state = state.copyWith(platforms: Set.unmodifiable(platforms));
+  void setPlatforms(Set<SocialPlatform> platforms) {
+    final variants = {...state.platformVariants};
+    for (final platform in platforms) {
+      variants.putIfAbsent(
+        platform,
+        () => PlatformPostVariant.fromSource(
+          platform: platform,
+          sourceCaption: state.caption,
+        ),
+      );
+    }
+    state = state.copyWith(
+      platforms: Set.unmodifiable(platforms),
+      platformVariants: Map.unmodifiable(variants),
+    );
+  }
+
+  void initializePlatformVariants() => setPlatforms(state.platforms);
+
+  void updatePlatformVariant(SocialPlatform platform, String caption) {
+    if (!state.platforms.contains(platform)) return;
+    final current = state.platformVariants[platform];
+    final variant =
+        current ??
+        PlatformPostVariant.fromSource(
+          platform: platform,
+          sourceCaption: state.caption,
+        );
+    state = state.copyWith(
+      platformVariants: Map.unmodifiable({
+        ...state.platformVariants,
+        platform: variant.copyWith(caption: caption),
+      }),
+    );
+  }
+
+  void resetPlatformVariant(SocialPlatform platform) {
+    if (!state.platforms.contains(platform)) return;
+    state = state.copyWith(
+      platformVariants: Map.unmodifiable({
+        ...state.platformVariants,
+        platform: PlatformPostVariant.fromSource(
+          platform: platform,
+          sourceCaption: state.caption,
+        ),
+      }),
+    );
+  }
 
   void setMode(PublicationMode value) => state = state.copyWith(mode: value);
   void schedule(DateTime date) =>
