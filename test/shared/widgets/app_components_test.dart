@@ -92,4 +92,26 @@ void main() {
     expect(checked, isTrue);
     expect(selected, 'b');
   });
+
+  testWidgets('badge can expose a more descriptive semantic status', (
+    tester,
+  ) async {
+    final semantics = tester.ensureSemantics();
+    await tester.pumpWidget(
+      buildTestApp(
+        const AppBadge(
+          label: 'YouTube',
+          semanticLabel: 'YouTube, attention requise',
+          tone: AppBadgeTone.warning,
+        ),
+      ),
+    );
+
+    expect(find.text('YouTube'), findsOneWidget);
+    expect(
+      find.bySemanticsLabel(RegExp('YouTube, attention requise')),
+      findsOneWidget,
+    );
+    semantics.dispose();
+  });
 }

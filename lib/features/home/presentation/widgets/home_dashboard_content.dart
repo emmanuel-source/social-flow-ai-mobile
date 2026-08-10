@@ -245,6 +245,8 @@ class _HomeHeader extends StatelessWidget {
                     for (final network in networks)
                       AppBadge(
                         label: network.platform.label,
+                        semanticLabel:
+                            '${network.platform.label}, ${network.connected ? 'opérationnel' : 'attention requise'}',
                         icon:
                             network.connected
                                 ? Icons.check

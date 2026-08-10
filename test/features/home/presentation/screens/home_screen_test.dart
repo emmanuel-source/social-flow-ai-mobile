@@ -228,6 +228,14 @@ void main() {
       findsOneWidget,
     );
     expect(
+      find.bySemanticsLabel(RegExp('Instagram, opérationnel')),
+      findsOneWidget,
+    );
+    expect(
+      find.bySemanticsLabel(RegExp('YouTube, opérationnel')),
+      findsOneWidget,
+    );
+    expect(
       find.bySemanticsLabel(RegExp('Créer une publication')),
       findsOneWidget,
     );

@@ -28,6 +28,8 @@ void main() {
     expect(AppRoutes.parentRouteFor(AppRoutes.mediaLibrary), AppRoutes.create);
     expect(AppRoutes.parentRouteFor(AppRoutes.videoSource), AppRoutes.create);
     expect(AppRoutes.parentRouteFor(AppRoutes.aiAssistant), AppRoutes.create);
+    expect(AppRoutes.parentRouteFor(AppRoutes.campaign), AppRoutes.create);
+    expect(AppRoutes.parentRouteFor(AppRoutes.drafts), AppRoutes.create);
     expect(
       AppRoutes.parentRouteFor(AppRoutes.calendarDetail),
       AppRoutes.calendar,
@@ -38,6 +40,12 @@ void main() {
     );
     expect(AppRoutes.parentRouteFor(AppRoutes.workspaces), AppRoutes.profile);
     expect(AppRoutes.parentRouteFor(AppRoutes.accounts), AppRoutes.profile);
+    expect(AppRoutes.parentRouteFor(AppRoutes.brandKit), AppRoutes.profile);
+    expect(AppRoutes.parentRouteFor(AppRoutes.agents), AppRoutes.profile);
+    expect(AppRoutes.parentRouteFor(AppRoutes.team), AppRoutes.profile);
+    expect(AppRoutes.parentRouteFor(AppRoutes.approvals), AppRoutes.profile);
+    expect(AppRoutes.parentRouteFor(AppRoutes.subscription), AppRoutes.profile);
+    expect(AppRoutes.parentRouteFor(AppRoutes.security), AppRoutes.profile);
     expect(AppRoutes.parentRouteFor(AppRoutes.settings), AppRoutes.profile);
   });
 }

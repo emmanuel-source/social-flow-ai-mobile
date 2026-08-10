@@ -12,12 +12,14 @@ class AppBadge extends StatelessWidget {
     required this.label,
     this.tone = AppBadgeTone.neutral,
     this.icon,
+    this.semanticLabel,
     super.key,
   });
 
   final String label;
   final AppBadgeTone tone;
   final IconData? icon;
+  final String? semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class AppBadge extends StatelessWidget {
       AppBadgeTone.danger => (AppColors.dangerContainer, AppColors.danger),
     };
     return Semantics(
-      label: label,
+      label: semanticLabel ?? label,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: background,
