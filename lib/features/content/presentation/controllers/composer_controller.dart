@@ -60,8 +60,11 @@ class ComposerController extends Notifier<SocialPost> {
   void togglePlatform(SocialPlatform platform) {
     final next = {...state.platforms};
     next.contains(platform) ? next.remove(platform) : next.add(platform);
-    state = state.copyWith(platforms: next);
+    setPlatforms(next);
   }
+
+  void setPlatforms(Set<SocialPlatform> platforms) =>
+      state = state.copyWith(platforms: Set.unmodifiable(platforms));
 
   void setMode(PublicationMode value) => state = state.copyWith(mode: value);
   void schedule(DateTime date) =>

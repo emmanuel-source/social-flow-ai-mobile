@@ -13,6 +13,8 @@ class SocialNetworkCard extends StatelessWidget {
     this.accountLabel,
     this.connected = false,
     this.selected = false,
+    this.compatible = true,
+    this.compact = false,
     super.key,
   });
 
@@ -21,58 +23,90 @@ class SocialNetworkCard extends StatelessWidget {
   final String? accountLabel;
   final bool connected;
   final bool selected;
+  final bool compatible;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final color = _platformColor(platform);
-    return AppCard(
-      onTap: onTap,
-      semanticLabel:
-          '${platform.label}, ${connected ? 'connecté' : 'non connecté'}',
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: color.withValues(alpha: 0.12),
-            foregroundColor: color,
-            child: Text(
-              _platformMonogram(platform),
-              style: Theme.of(
-                context,
-              ).textTheme.labelLarge?.copyWith(color: color),
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  platform.label,
-                  style: Theme.of(context).textTheme.titleSmall,
+    final statusLabel =
+        !compatible
+            ? 'Indisponible'
+            : connected
+            ? 'Connecté'
+            : 'Non connecté';
+    final statusTone =
+        !compatible
+            ? AppBadgeTone.warning
+            : connected
+            ? AppBadgeTone.success
+            : AppBadgeTone.neutral;
+    final accessibilityLabel = [
+      platform.label,
+      if (accountLabel != null) accountLabel!,
+      connected ? 'connecté' : 'non connecté',
+      compatible ? 'compatible' : 'indisponible pour ce contenu',
+      selected ? 'sélectionné' : 'non sélectionné',
+    ].join(', ');
+
+    return Semantics(
+      container: true,
+      button: onTap != null,
+      selected: selected,
+      label: accessibilityLabel,
+      child: ExcludeSemantics(
+        child: AppCard(
+          onTap: onTap,
+          padding:
+              compact
+                  ? const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.sm,
+                  )
+                  : const EdgeInsets.all(AppSpacing.cardPadding),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: color.withValues(alpha: 0.12),
+                foregroundColor: color,
+                child: Text(
+                  _platformMonogram(platform),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.copyWith(color: color),
                 ),
-                if (accountLabel != null)
-                  Text(
-                    accountLabel!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      platform.label,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    if (accountLabel != null)
+                      Text(
+                        accountLabel!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              AppBadge(label: statusLabel, tone: statusTone),
+              if (selected) ...[
+                const SizedBox(width: AppSpacing.sm),
+                Icon(
+                  Icons.check_circle,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ],
-            ),
+            ],
           ),
-          const SizedBox(width: AppSpacing.sm),
-          AppBadge(
-            label: connected ? 'Connecté' : 'À connecter',
-            tone: connected ? AppBadgeTone.success : AppBadgeTone.neutral,
-          ),
-          if (selected) ...[
-            const SizedBox(width: AppSpacing.sm),
-            Icon(
-              Icons.check_circle,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ],
-        ],
+        ),
       ),
     );
   }

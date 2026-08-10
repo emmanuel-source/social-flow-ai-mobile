@@ -147,4 +147,27 @@ void main() {
       isNot(contains(SocialPlatform.linkedin)),
     );
   });
+
+  test(
+    'remplace la sélection de plateformes sans altérer le contenu source',
+    () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      final controller = container.read(composerControllerProvider.notifier);
+      controller
+        ..setType(PostType.image)
+        ..setCaption('Contenu source')
+        ..setMedia(['photo.jpg'])
+        ..setPlatforms({SocialPlatform.instagram, SocialPlatform.linkedin});
+
+      final post = container.read(composerControllerProvider);
+      expect(post.platforms, {
+        SocialPlatform.instagram,
+        SocialPlatform.linkedin,
+      });
+      expect(post.type, PostType.image);
+      expect(post.caption, 'Contenu source');
+      expect(post.mediaPaths, ['photo.jpg']);
+    },
+  );
 }

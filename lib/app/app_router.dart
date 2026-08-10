@@ -48,6 +48,7 @@ import '../features/video_studio/presentation/screens/video_source_screen.dart';
 import '../features/video_studio/presentation/screens/youtube_import_screen.dart';
 import '../features/workspaces/presentation/screens/workspaces_screen.dart';
 import '../shared/widgets/app_buttons.dart';
+import '../shared/widgets/future_feature_screen.dart';
 import 'app_routes.dart';
 import 'app_shell.dart';
 
@@ -82,6 +83,12 @@ abstract final class AppRouter {
               AppRoutes.postMedia => const ComposerScreen(),
               AppRoutes.postCaption => const CaptionScreen(),
               AppRoutes.postPlatforms => const PlatformsScreen(),
+              AppRoutes.postAdapt => const FutureFeatureScreen(
+                title: 'Adaptation par plateforme',
+                description:
+                    'Le contenu source sera adapté à chaque réseau dans SFA-PUB-004.',
+                icon: Icons.tune,
+              ),
               AppRoutes.postPreview => const PostPreviewScreen(),
               AppRoutes.postSchedule => const PostScheduleScreen(),
               AppRoutes.postSuccess => const PostSuccessScreen(),

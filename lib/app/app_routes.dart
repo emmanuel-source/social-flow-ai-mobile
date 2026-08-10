@@ -30,6 +30,7 @@ abstract final class AppRoutes {
   static const postMedia = '/create/media';
   static const postCaption = '/create/caption';
   static const postPlatforms = '/create/platforms';
+  static const postAdapt = '/create/adapt';
   static const postPreview = '/create/preview';
   static const postSchedule = '/create/schedule';
   static const postSuccess = '/create/success';
@@ -79,6 +80,7 @@ abstract final class AppRoutes {
     postMedia: create,
     postCaption: create,
     postPlatforms: create,
+    postAdapt: create,
     postPreview: create,
     postSchedule: create,
     postSuccess: create,
