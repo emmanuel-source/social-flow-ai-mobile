@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/models/social_platform.dart';
 import '../../../../shared/widgets/feature_scaffold.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 
 class SocialAccountsScreen extends StatelessWidget {
   const SocialAccountsScreen({super.key});
@@ -8,12 +10,12 @@ class SocialAccountsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accounts = [
-      ('Instagram', '@sarahcreates', true),
-      ('Facebook', 'Sarah Miller Studio', true),
-      ('TikTok', '@sarahcreates', true),
-      ('YouTube', 'Sarah Miller', true),
-      ('LinkedIn', 'Non connecté', false),
-      ('X', 'Non connecté', false),
+      (SocialPlatform.instagram, '@sarahcreates', true),
+      (SocialPlatform.facebook, 'Sarah Miller Studio', true),
+      (SocialPlatform.tiktok, '@sarahcreates', true),
+      (SocialPlatform.youtube, 'Sarah Miller', true),
+      (SocialPlatform.linkedin, 'Non connecté', false),
+      (SocialPlatform.x, 'Non connecté', false),
     ];
     return FeatureScaffold(
       title: 'Comptes sociaux',
@@ -23,10 +25,8 @@ class SocialAccountsScreen extends StatelessWidget {
             accounts
                 .map(
                   (account) => ListTile(
-                    leading: CircleAvatar(
-                      child: Text(account.$1.substring(0, 2).toUpperCase()),
-                    ),
-                    title: Text(account.$1),
+                    leading: SocialPlatformIcon(platform: account.$1),
+                    title: Text(account.$1.label),
                     subtitle: Text(account.$2),
                     trailing:
                         account.$3
@@ -41,7 +41,7 @@ class SocialAccountsScreen extends StatelessWidget {
                                   ).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Connexion ${account.$1} ouverte.',
+                                        'Connexion ${account.$1.label} ouverte.',
                                       ),
                                     ),
                                   ),

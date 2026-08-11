@@ -65,10 +65,10 @@ void main() {
     await _pumpProfile(tester, repository);
 
     expect(find.text('3 sur 4 connectés'), findsOneWidget);
-    expect(find.text('Instagram · Connecté'), findsOneWidget);
-    expect(find.text('Facebook · Connecté'), findsOneWidget);
-    expect(find.text('TikTok · Connecté'), findsOneWidget);
-    expect(find.text('YouTube · Non connecté'), findsOneWidget);
+    expect(find.bySemanticsLabel('Instagram, Connecté'), findsOneWidget);
+    expect(find.bySemanticsLabel('Facebook, Connecté'), findsOneWidget);
+    expect(find.bySemanticsLabel('TikTok, Connecté'), findsOneWidget);
+    expect(find.bySemanticsLabel('YouTube, Non connecté'), findsOneWidget);
   });
 
   testWidgets('separates organization from account preferences', (

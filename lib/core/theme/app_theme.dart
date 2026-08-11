@@ -21,11 +21,27 @@ abstract final class AppTheme {
       secondary: AppColors.brandSecondary,
       onSecondary: AppColors.white,
       tertiary: AppColors.brandBlue,
+      primaryContainer:
+          isDark
+              ? AppColors.darkPrimaryContainer
+              : AppColors.lightPrimaryContainer,
+      onPrimaryContainer:
+          isDark
+              ? AppColors.darkOnPrimaryContainer
+              : AppColors.lightOnPrimaryContainer,
       error: AppColors.danger,
       onError: AppColors.white,
       surface: isDark ? AppColors.darkSurface : AppColors.lightSurface,
       onSurface:
           isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+      onSurfaceVariant:
+          isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+      surfaceContainerLow:
+          isDark ? AppColors.darkSurface : const Color(0xFFFBFBFE),
+      surfaceContainer:
+          isDark ? AppColors.darkSurfaceMuted : const Color(0xFFF7F7FB),
+      surfaceContainerHigh:
+          isDark ? const Color(0xFF20283A) : const Color(0xFFF1F2F7),
       surfaceContainerHighest:
           isDark ? AppColors.darkSurfaceMuted : AppColors.lightSurfaceMuted,
       outline: isDark ? AppColors.darkBorder : AppColors.lightBorder,
@@ -55,6 +71,7 @@ abstract final class AppTheme {
         backgroundColor: AppColors.transparent,
         foregroundColor: scheme.onSurface,
         titleTextStyle: baseTextTheme.titleLarge,
+        toolbarHeight: 56,
       ),
       cardTheme: CardThemeData(
         color: scheme.surface,
@@ -69,8 +86,8 @@ abstract final class AppTheme {
         filled: true,
         fillColor: scheme.surface,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
         ),
         border: const OutlineInputBorder(
           borderRadius: AppRadius.control,
@@ -92,6 +109,12 @@ abstract final class AppTheme {
           borderRadius: AppRadius.control,
           borderSide: BorderSide(color: scheme.error, width: 2),
         ),
+        labelStyle: baseTextTheme.bodyMedium?.copyWith(
+          color: scheme.onSurfaceVariant,
+        ),
+        hintStyle: baseTextTheme.bodyMedium?.copyWith(
+          color: scheme.onSurfaceVariant.withValues(alpha: 0.8),
+        ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
@@ -103,10 +126,11 @@ abstract final class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
+          foregroundColor: scheme.primary,
           minimumSize: const Size(0, AppSizes.controlHeight),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
           shape: const RoundedRectangleBorder(borderRadius: AppRadius.control),
-          side: BorderSide(color: scheme.outline),
+          side: BorderSide(color: scheme.primary.withValues(alpha: 0.28)),
           textStyle: baseTextTheme.labelLarge,
         ),
       ),
@@ -123,20 +147,35 @@ abstract final class AppTheme {
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           minimumSize: const Size.square(AppSizes.minimumTouchTarget),
+          iconSize: AppSizes.iconMedium,
         ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: scheme.surfaceContainerHighest,
         selectedColor: scheme.primaryContainer,
         disabledColor: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        side: BorderSide(color: scheme.outlineVariant),
-        shape: const StadiumBorder(),
-        labelStyle: baseTextTheme.labelMedium,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+        side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.7)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+        ),
+        labelStyle: baseTextTheme.labelSmall,
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       ),
       dividerTheme: DividerThemeData(
-        color: scheme.outlineVariant,
-        space: AppSpacing.lg,
+        color: scheme.outlineVariant.withValues(alpha: 0.72),
+        space: AppSpacing.md,
+      ),
+      tabBarTheme: TabBarThemeData(
+        dividerColor: scheme.outlineVariant.withValues(alpha: 0.52),
+        dividerHeight: 1,
+        indicatorColor: scheme.primary,
+        indicatorSize: TabBarIndicatorSize.label,
+        labelColor: scheme.primary,
+        unselectedLabelColor: scheme.onSurfaceVariant,
+        labelStyle: baseTextTheme.labelLarge,
+        unselectedLabelStyle: baseTextTheme.labelLarge?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: scheme.surface,
@@ -156,8 +195,20 @@ abstract final class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         height: AppSizes.navigationBarHeight,
         backgroundColor: scheme.surface,
-        indicatorColor: scheme.primaryContainer,
+        indicatorColor: scheme.primaryContainer.withValues(alpha: 0.66),
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
         elevation: 0,
+        iconTheme: WidgetStateProperty.resolveWith(
+          (states) => IconThemeData(
+            size: AppSizes.iconMedium,
+            color:
+                states.contains(WidgetState.selected)
+                    ? scheme.primary
+                    : scheme.onSurfaceVariant,
+          ),
+        ),
         labelTextStyle: WidgetStateProperty.resolveWith(
           (states) =>
               states.contains(WidgetState.selected)

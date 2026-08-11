@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_sizes.dart';
 import '../../core/theme/app_spacing.dart';
 import 'app_buttons.dart';
@@ -117,7 +118,20 @@ class _AppStateView extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon, size: AppSizes.iconHero, color: iconColor),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: iconColor.withValues(alpha: 0.1),
+                    borderRadius: AppRadius.modal,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    child: Icon(
+                      icon,
+                      size: AppSizes.iconLarge,
+                      color: iconColor,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   title,

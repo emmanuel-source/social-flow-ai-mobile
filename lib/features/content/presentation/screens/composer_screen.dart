@@ -90,7 +90,7 @@ class _ComposerScreenState extends ConsumerState<ComposerScreen> {
               onMove: _moveMedia,
             ),
           ],
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           AppTextField(
             key: const Key('composer-text-field'),
             controller: _textController,
@@ -109,7 +109,7 @@ class _ComposerScreenState extends ConsumerState<ComposerScreen> {
             maxLines: 8,
             onChanged: ref.read(composerControllerProvider.notifier).setCaption,
           ),
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           const SectionHeader(
             title: 'Coup de pouce IA',
             subtitle:
@@ -137,7 +137,7 @@ class _ComposerScreenState extends ConsumerState<ComposerScreen> {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           AppPrimaryButton(
             key: const Key('composer-continue'),
             label: 'Continuer',

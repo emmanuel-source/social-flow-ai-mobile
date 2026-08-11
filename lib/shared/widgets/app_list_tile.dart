@@ -23,17 +23,35 @@ class AppListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
       enabled: enabled,
       onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+      minTileHeight: 48,
+      dense: true,
+      visualDensity: const VisualDensity(horizontal: -2, vertical: -2),
+      horizontalTitleGap: AppSpacing.sm,
+      minVerticalPadding: AppSpacing.xs,
+      contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       shape: const RoundedRectangleBorder(borderRadius: AppRadius.control),
       leading: leading,
-      title: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis),
+      title: Text(
+        title,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textTheme.titleSmall,
+      ),
       subtitle:
           subtitle == null
               ? null
-              : Text(subtitle!, maxLines: 2, overflow: TextOverflow.ellipsis),
+              : Text(
+                subtitle!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
       trailing:
           trailing ?? (onTap == null ? null : const Icon(Icons.chevron_right)),
     );

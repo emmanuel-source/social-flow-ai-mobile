@@ -16,9 +16,9 @@ abstract final class AppSpacing {
   static const screenHorizontal = lg;
   static const screenTop = md;
   static const screenBottom = xxxl;
-  static const cardPadding = lg;
+  static const cardPadding = md;
   static const controlGap = sm;
-  static const sectionGap = xxl;
+  static const sectionGap = lg;
 
   static const screenInsets = EdgeInsets.fromLTRB(
     screenHorizontal,

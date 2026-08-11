@@ -16,6 +16,7 @@ import '../../../../shared/widgets/app_state_view.dart';
 import '../../../../shared/widgets/metric_card.dart';
 import '../../../../shared/widgets/section_card.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 import '../../domain/entities/home_dashboard.dart';
 
 class HomeDashboardContent extends StatelessWidget {
@@ -177,7 +178,7 @@ class _HomeHeader extends StatelessWidget {
             AppAvatar(label: userName),
           ],
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: AppSpacing.md),
         AppCard(
           key: const Key('active-workspace'),
           elevated: true,
@@ -217,7 +218,7 @@ class _HomeHeader extends StatelessWidget {
                 ],
               ),
               if (networks.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: AppSpacing.md),
                 Row(
                   children: [
                     Icon(
@@ -237,25 +238,13 @@ class _HomeHeader extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.sm),
                 Wrap(
                   spacing: AppSpacing.sm,
                   runSpacing: AppSpacing.sm,
                   children: [
                     for (final network in networks)
-                      AppBadge(
-                        label: network.platform.label,
-                        semanticLabel:
-                            '${network.platform.label}, ${network.connected ? 'opérationnel' : 'attention requise'}',
-                        icon:
-                            network.connected
-                                ? Icons.check
-                                : Icons.priority_high,
-                        tone:
-                            network.connected
-                                ? AppBadgeTone.success
-                                : AppBadgeTone.warning,
-                      ),
+                      _NetworkStatus(network: network),
                   ],
                 ),
               ],
@@ -335,13 +324,19 @@ class _QuickActions extends StatelessWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             final compact = AppBreakpoints.isCompact(constraints.maxWidth);
+            final scaled = MediaQuery.textScalerOf(context).scale(1) > 1.1;
             return GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
               crossAxisSpacing: AppSpacing.md,
               mainAxisSpacing: AppSpacing.md,
-              mainAxisExtent: compact ? 204 : 172,
+              mainAxisExtent:
+                  scaled
+                      ? 176
+                      : compact
+                      ? 144
+                      : 132,
               children: [
                 ActionTile(
                   icon: Icons.add_box_outlined,
@@ -435,10 +430,7 @@ class _ScheduledPosts extends StatelessWidget {
                   title: posts[index].title,
                   subtitle:
                       '${posts[index].scheduleLabel} · ${posts[index].contentType}',
-                  leading: AppAvatar(
-                    label: posts[index].platform.label,
-                    size: AppAvatarSize.small,
-                  ),
+                  leading: SocialPlatformIcon(platform: posts[index].platform),
                   trailing: _PublicationStatusBadge(
                     status: posts[index].status,
                   ),
@@ -560,10 +552,7 @@ class _RecentPosts extends StatelessWidget {
                   title: posts[index].title,
                   subtitle:
                       '${posts[index].preview} · ${posts[index].primaryMetric}',
-                  leading: AppAvatar(
-                    label: posts[index].platform.label,
-                    size: AppAvatarSize.small,
-                  ),
+                  leading: SocialPlatformIcon(platform: posts[index].platform),
                   trailing: _PublicationStatusBadge(
                     status: posts[index].status,
                   ),
@@ -603,7 +592,7 @@ class _AiSuggestionCard extends StatelessWidget {
                   borderRadius: AppRadius.control,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: const EdgeInsets.all(AppSpacing.sm),
                   child: Icon(
                     Icons.auto_awesome,
                     color: scheme.onPrimaryContainer,
@@ -622,7 +611,7 @@ class _AiSuggestionCard extends StatelessWidget {
               const AppBadge(label: 'IA', tone: AppBadgeTone.info),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
           Text(
             suggestion.title,
             style: Theme.of(context).textTheme.titleMedium,
@@ -660,5 +649,64 @@ class _PublicationStatusBadge extends StatelessWidget {
       HomePublicationStatus.draft => ('Brouillon', AppBadgeTone.neutral),
     };
     return AppBadge(label: label, tone: tone);
+  }
+}
+
+class _NetworkStatus extends StatelessWidget {
+  const _NetworkStatus({required this.network});
+
+  final HomeNetworkSummary network;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final statusColor =
+        network.connected ? AppColors.success : AppColors.warning;
+    final statusLabel =
+        network.connected ? 'opérationnel' : 'attention requise';
+    return Semantics(
+      label: '${network.platform.label}, $statusLabel',
+      child: ExcludeSemantics(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: scheme.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            border: Border.all(
+              color: scheme.outlineVariant.withValues(alpha: 0.72),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.sm,
+              vertical: AppSpacing.xs,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SocialPlatformIcon(
+                  platform: network.platform,
+                  size: AppSizes.iconExtraSmall,
+                  contained: false,
+                ),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  network.platform.label,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                const SizedBox(width: AppSpacing.xs),
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: statusColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

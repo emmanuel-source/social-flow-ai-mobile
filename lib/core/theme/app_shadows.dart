@@ -8,9 +8,9 @@ abstract final class AppShadows {
       color: (brightness == Brightness.dark
               ? AppColors.black
               : AppColors.brandNavy)
-          .withValues(alpha: brightness == Brightness.dark ? 0.24 : 0.06),
-      blurRadius: 16,
-      offset: const Offset(0, 6),
+          .withValues(alpha: brightness == Brightness.dark ? 0.18 : 0.035),
+      blurRadius: 10,
+      offset: const Offset(0, 3),
     ),
   ];
 
@@ -19,9 +19,9 @@ abstract final class AppShadows {
       color: (brightness == Brightness.dark
               ? AppColors.black
               : AppColors.brandNavy)
-          .withValues(alpha: brightness == Brightness.dark ? 0.32 : 0.12),
-      blurRadius: 28,
-      offset: const Offset(0, 12),
+          .withValues(alpha: brightness == Brightness.dark ? 0.24 : 0.07),
+      blurRadius: 18,
+      offset: const Offset(0, 6),
     ),
   ];
 }

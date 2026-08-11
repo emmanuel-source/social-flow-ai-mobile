@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_badge.dart';
 import '../../../../shared/widgets/app_buttons.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -12,6 +11,7 @@ import '../../../../shared/widgets/app_list_tile.dart';
 import '../../../../shared/widgets/metric_card.dart';
 import '../../../../shared/widgets/section_card.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 import '../../domain/entities/analytics_dashboard.dart';
 import 'analytics_views_chart.dart';
 
@@ -48,7 +48,7 @@ class AnalyticsDashboardContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _Header(dashboard: dashboard),
-                  const SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.lg),
                   _PeriodSelector(
                     selected: dashboard.period,
                     onSelected: onPeriodSelected,
@@ -206,7 +206,7 @@ class _ViewsEvolution extends StatelessWidget {
                   Expanded(
                     child: Text(
                       '${views.value} vues',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   AppBadge(
@@ -255,9 +255,8 @@ class _PlatformSection extends StatelessWidget {
                   title: platforms[index].platform.label,
                   subtitle:
                       '${platforms[index].views} vues · ${platforms[index].engagement} engagement',
-                  leading: AppAvatar(
-                    label: platforms[index].platform.label,
-                    size: AppAvatarSize.small,
+                  leading: SocialPlatformIcon(
+                    platform: platforms[index].platform,
                   ),
                   trailing: AppBadge(
                     label: platforms[index].change,
@@ -306,9 +305,8 @@ class _TopContents extends StatelessWidget {
                   title: contents[index].title,
                   subtitle:
                       '${contents[index].platform.label} · ${contents[index].contentType}\n${contents[index].primaryMetric} · ${contents[index].engagement}',
-                  leading: AppAvatar(
-                    label: contents[index].platform.label,
-                    size: AppAvatarSize.small,
+                  leading: SocialPlatformIcon(
+                    platform: contents[index].platform,
                   ),
                   trailing: AppBadge(
                     label: 'Top ${contents[index].rank}',
@@ -353,7 +351,7 @@ class _InsightCard extends StatelessWidget {
                   borderRadius: AppRadius.control,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: const EdgeInsets.all(AppSpacing.sm),
                   child: Icon(
                     Icons.auto_awesome,
                     color: scheme.onPrimaryContainer,
@@ -365,7 +363,7 @@ class _InsightCard extends StatelessWidget {
               const AppBadge(label: 'Démo', tone: AppBadgeTone.info),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
           Text(insight.title, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: AppSpacing.sm),
           Text(

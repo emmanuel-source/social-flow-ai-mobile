@@ -13,6 +13,12 @@ abstract final class AppGradients {
     ],
   );
 
+  static const primaryAction = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [AppColors.brandSecondary, AppColors.brandPrimary],
+  );
+
   static const ai = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,

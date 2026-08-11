@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_sizes.dart';
+
 class AppNavigationDestination {
   const AppNavigationDestination({
     required this.label,
@@ -28,27 +30,40 @@ class AppNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
       top: false,
-      child: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: onDestinationSelected,
-        destinations: destinations
-            .map(
-              (destination) => NavigationDestination(
-                label: destination.label,
-                tooltip: destination.tooltip ?? destination.label,
-                icon: Semantics(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: colorScheme.outlineVariant.withValues(alpha: 0.72),
+            ),
+          ),
+        ),
+        child: NavigationBar(
+          selectedIndex: selectedIndex,
+          onDestinationSelected: onDestinationSelected,
+          destinations: destinations
+              .map(
+                (destination) => NavigationDestination(
                   label: destination.label,
-                  child: Icon(destination.icon),
+                  tooltip: destination.tooltip ?? destination.label,
+                  icon: Semantics(
+                    label: destination.label,
+                    child: Icon(destination.icon, size: AppSizes.iconMedium),
+                  ),
+                  selectedIcon: Semantics(
+                    label: '${destination.label}, sélectionné',
+                    child: Icon(
+                      destination.selectedIcon,
+                      size: AppSizes.iconMedium,
+                    ),
+                  ),
                 ),
-                selectedIcon: Semantics(
-                  label: '${destination.label}, sélectionné',
-                  child: Icon(destination.selectedIcon),
-                ),
-              ),
-            )
-            .toList(growable: false),
+              )
+              .toList(growable: false),
+        ),
       ),
     );
   }

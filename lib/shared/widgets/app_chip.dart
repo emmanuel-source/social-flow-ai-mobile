@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_sizes.dart';
+import '../../core/theme/app_spacing.dart';
+
 class AppChip extends StatelessWidget {
   const AppChip({
     required this.label,
@@ -19,7 +22,18 @@ class AppChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      label: Text(label, overflow: TextOverflow.ellipsis),
+      visualDensity: const VisualDensity(horizontal: -3, vertical: -3),
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      avatarBoxConstraints: const BoxConstraints.tightFor(
+        width: AppSizes.iconMedium,
+        height: AppSizes.iconMedium,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs),
+      label: Text(
+        label,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.labelSmall,
+      ),
       selected: selected,
       avatar: icon == null ? null : Icon(icon),
       onSelected: enabled ? onSelected : null,

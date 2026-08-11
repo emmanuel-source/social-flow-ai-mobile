@@ -7,9 +7,9 @@ import '../../../../shared/models/social_platform.dart';
 import '../../../../shared/widgets/app_badge.dart';
 import '../../../../shared/widgets/app_buttons.dart';
 import '../../../../shared/widgets/app_card.dart';
-import '../../../../shared/widgets/app_chip.dart';
 import '../../../../shared/widgets/feature_scaffold.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 import '../../domain/entities/social_post.dart';
 import '../controllers/composer_controller.dart';
 import '../models/demo_social_account.dart';
@@ -73,19 +73,16 @@ class _PostPreviewScreenState extends ConsumerState<PostPreviewScreen> {
               child: Row(
                 children: [
                   for (var index = 0; index < platforms.length; index++) ...[
-                    Semantics(
+                    SocialPlatformChip(
+                      key: Key('preview-${platforms[index].name}'),
+                      platform: platforms[index],
                       selected: platforms[index] == activePlatform,
-                      label:
+                      semanticLabel:
                           '${platforms[index].label}, ${platforms[index] == activePlatform ? 'preview actif' : 'preview inactif'}',
-                      child: AppChip(
-                        key: Key('preview-${platforms[index].name}'),
-                        label: platforms[index].label,
-                        selected: platforms[index] == activePlatform,
-                        onSelected:
-                            (_) => setState(
-                              () => _activePlatform = platforms[index],
-                            ),
-                      ),
+                      onSelected:
+                          (_) => setState(
+                            () => _activePlatform = platforms[index],
+                          ),
                     ),
                     if (index < platforms.length - 1)
                       const SizedBox(width: AppSpacing.sm),
@@ -93,7 +90,7 @@ class _PostPreviewScreenState extends ConsumerState<PostPreviewScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xxl),
+            const SizedBox(height: AppSpacing.xl),
             const SectionHeader(
               title: 'Aperçu',
               subtitle:
@@ -123,10 +120,10 @@ class _PostPreviewScreenState extends ConsumerState<PostPreviewScreen> {
                       ? null
                       : () => _editVersion(activePlatform),
             ),
-            const SizedBox(height: AppSpacing.xxl),
+            const SizedBox(height: AppSpacing.xl),
             _PreviewSummary(post: post),
           ],
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           AppPrimaryButton(
             key: const Key('preview-continue'),
             label: 'Continuer',

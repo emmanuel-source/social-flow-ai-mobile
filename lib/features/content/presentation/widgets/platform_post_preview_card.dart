@@ -100,10 +100,10 @@ class _PlatformPostPreviewCardState extends State<PlatformPostPreviewCard> {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: AppSpacing.md),
                 _buildMedia(context),
                 if (post.type != PostType.text)
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.md),
                 Semantics(
                   label:
                       variant.caption.trim().isEmpty
@@ -266,7 +266,7 @@ class _MediaFallback extends StatelessWidget {
       child: Container(
         height: AppSizes.networkImageHeight,
         width: double.infinity,
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: AppRadius.control,

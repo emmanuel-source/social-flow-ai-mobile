@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_sizes.dart';
 import '../../core/theme/app_spacing.dart';
 import '../models/social_platform.dart';
-import 'app_badge.dart';
 import 'app_card.dart';
+import 'social_platform_visuals.dart';
 
 class SocialNetworkCard extends StatelessWidget {
   const SocialNetworkCard({
@@ -28,7 +28,6 @@ class SocialNetworkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _platformColor(platform);
     final statusLabel =
         !compatible
             ? 'Indisponible'
@@ -37,10 +36,10 @@ class SocialNetworkCard extends StatelessWidget {
             : 'Non connecté';
     final statusTone =
         !compatible
-            ? AppBadgeTone.warning
+            ? SocialPlatformStatusTone.warning
             : connected
-            ? AppBadgeTone.success
-            : AppBadgeTone.neutral;
+            ? SocialPlatformStatusTone.success
+            : SocialPlatformStatusTone.neutral;
     final accessibilityLabel = [
       platform.label,
       if (accountLabel != null) accountLabel!,
@@ -66,15 +65,9 @@ class SocialNetworkCard extends StatelessWidget {
                   : const EdgeInsets.all(AppSpacing.cardPadding),
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundColor: color.withValues(alpha: 0.12),
-                foregroundColor: color,
-                child: Text(
-                  _platformMonogram(platform),
-                  style: Theme.of(
-                    context,
-                  ).textTheme.labelLarge?.copyWith(color: color),
-                ),
+              SocialPlatformIcon(
+                platform: platform,
+                containerSize: compact ? 32 : 36,
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
@@ -96,11 +89,12 @@ class SocialNetworkCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),
-              AppBadge(label: statusLabel, tone: statusTone),
+              SocialPlatformStatus(label: statusLabel, tone: statusTone),
               if (selected) ...[
                 const SizedBox(width: AppSpacing.sm),
                 Icon(
-                  Icons.check_circle,
+                  Icons.check_circle_outline,
+                  size: AppSizes.iconMedium,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ],
@@ -110,29 +104,4 @@ class SocialNetworkCard extends StatelessWidget {
       ),
     );
   }
-
-  static Color _platformColor(SocialPlatform platform) => switch (platform) {
-    SocialPlatform.instagram => AppColors.instagram,
-    SocialPlatform.facebook => AppColors.facebook,
-    SocialPlatform.tiktok => AppColors.tiktok,
-    SocialPlatform.youtube => AppColors.youtube,
-    SocialPlatform.snapchat => AppColors.snapchat,
-    SocialPlatform.x => AppColors.x,
-    SocialPlatform.linkedin => AppColors.linkedin,
-    SocialPlatform.pinterest => AppColors.pinterest,
-    SocialPlatform.threads => AppColors.threads,
-  };
-
-  static String _platformMonogram(SocialPlatform platform) =>
-      switch (platform) {
-        SocialPlatform.instagram => 'IG',
-        SocialPlatform.facebook => 'FB',
-        SocialPlatform.tiktok => 'TT',
-        SocialPlatform.youtube => 'YT',
-        SocialPlatform.snapchat => 'SC',
-        SocialPlatform.x => 'X',
-        SocialPlatform.linkedin => 'IN',
-        SocialPlatform.pinterest => 'PI',
-        SocialPlatform.threads => 'TH',
-      };
 }

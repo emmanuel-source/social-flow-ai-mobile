@@ -16,11 +16,17 @@ class AppLoader extends StatelessWidget {
       child: Center(
         child:
             compact
-                ? const CircularProgressIndicator()
+                ? const SizedBox.square(
+                  dimension: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
                 : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const CircularProgressIndicator(),
+                    const SizedBox.square(
+                      dimension: 28,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
                     const SizedBox(height: AppSpacing.md),
                     Text(label, style: Theme.of(context).textTheme.bodyMedium),
                   ],

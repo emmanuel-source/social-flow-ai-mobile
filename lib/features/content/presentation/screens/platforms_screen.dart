@@ -89,7 +89,7 @@ class PlatformsScreen extends ConsumerWidget {
             if (index < demoSocialAccounts.length - 1)
               const SizedBox(height: AppSpacing.sm),
           ],
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           AppPrimaryButton(
             key: const Key('platforms-continue'),
             label: 'Continuer',

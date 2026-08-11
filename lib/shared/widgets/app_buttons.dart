@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_gradients.dart';
+import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_sizes.dart';
 import '../../core/theme/app_spacing.dart';
 
@@ -21,9 +23,25 @@ class AppPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final button = FilledButton(
-      onPressed: loading ? null : onPressed,
-      child: _ButtonContent(label: label, icon: icon, loading: loading),
+    final enabled = !loading && onPressed != null;
+    final scheme = Theme.of(context).colorScheme;
+    final button = DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: enabled ? AppGradients.primaryAction : null,
+        color: enabled ? null : scheme.surfaceContainerHighest,
+        borderRadius: AppRadius.control,
+      ),
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          disabledBackgroundColor: Colors.transparent,
+          foregroundColor: scheme.onPrimary,
+          disabledForegroundColor: scheme.onSurfaceVariant,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: loading ? null : onPressed,
+        child: _ButtonContent(label: label, icon: icon, loading: loading),
+      ),
     );
     return Semantics(
       button: true,
@@ -105,10 +123,16 @@ class AppIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Semantics(
       button: true,
       label: tooltip,
       child: IconButton(
+        style: IconButton.styleFrom(
+          backgroundColor:
+              selected ? scheme.primaryContainer : Colors.transparent,
+          foregroundColor: selected ? scheme.primary : scheme.onSurfaceVariant,
+        ),
         onPressed: onPressed,
         tooltip: tooltip,
         isSelected: selected,
@@ -141,7 +165,7 @@ class _ButtonContent extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon),
+          Icon(icon, size: AppSizes.iconMedium),
           const SizedBox(width: AppSpacing.sm),
           Flexible(child: Text(label)),
         ],

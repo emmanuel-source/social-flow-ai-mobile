@@ -23,7 +23,10 @@ class AppTabs extends StatelessWidget {
       onTap: onTap,
       tabs: tabs
           .map(
-            (label) => Tab(child: Text(label, overflow: TextOverflow.ellipsis)),
+            (label) => Tab(
+              height: 44,
+              child: Text(label, overflow: TextOverflow.ellipsis),
+            ),
           )
           .toList(growable: false),
     );

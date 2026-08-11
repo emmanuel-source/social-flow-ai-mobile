@@ -53,7 +53,7 @@ class CreateHubScreen extends StatelessWidget {
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.xl),
+                      const SizedBox(height: AppSpacing.lg),
                       _PrimaryCreationCard(
                         onPressed: () => _open(context, AppRoutes.postType),
                       ),
@@ -112,7 +112,7 @@ class _PrimaryCreationCard extends StatelessWidget {
           borderRadius: AppRadius.modal,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xxl),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -127,7 +127,7 @@ class _PrimaryCreationCard extends StatelessWidget {
                       borderRadius: AppRadius.control,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(AppSpacing.md),
+                      padding: EdgeInsets.all(AppSpacing.sm),
                       child: Icon(
                         Icons.add_box_outlined,
                         color: AppColors.brandPrimary,
@@ -138,7 +138,7 @@ class _PrimaryCreationCard extends StatelessWidget {
                   AppBadge(label: 'Action principale', tone: AppBadgeTone.info),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 'Nouvelle publication',
                 style: Theme.of(
@@ -152,7 +152,7 @@ class _PrimaryCreationCard extends StatelessWidget {
                   color: AppColors.white.withValues(alpha: 0.88),
                 ),
               ),
-              const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: AppSpacing.md),
               FilledButton.icon(
                 key: const Key('new-publication-button'),
                 onPressed: onPressed,
@@ -278,7 +278,12 @@ class _AlternativeCreationGrid extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: AppSpacing.md,
               mainAxisSpacing: AppSpacing.md,
-              mainAxisExtent: compact || scaled ? 204 : 172,
+              mainAxisExtent:
+                  scaled
+                      ? 172
+                      : compact
+                      ? 140
+                      : 124,
               children: [
                 ActionTile(
                   icon: Icons.upload_file_outlined,
@@ -387,7 +392,7 @@ class _ActionIcon extends StatelessWidget {
         borderRadius: AppRadius.control,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: const EdgeInsets.all(AppSpacing.sm),
         child: Icon(icon, color: color, size: AppSizes.iconMedium),
       ),
     );

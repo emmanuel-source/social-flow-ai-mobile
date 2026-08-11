@@ -5,7 +5,6 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/models/social_platform.dart';
-import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_badge.dart';
 import '../../../../shared/widgets/app_buttons.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -13,6 +12,7 @@ import '../../../../shared/widgets/app_chip.dart';
 import '../../../../shared/widgets/app_network_image.dart';
 import '../../../../shared/widgets/app_tabs.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 import '../../domain/entities/calendar_entry.dart';
 import '../controllers/calendar_controller.dart';
 
@@ -48,7 +48,7 @@ class CalendarContent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _Header(onCreate: onCreate),
-                  const SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.lg),
                   DefaultTabController(
                     length: CalendarViewMode.values.length,
                     initialIndex: state.viewMode.index,
@@ -61,11 +61,11 @@ class CalendarContent extends StatelessWidget {
                           ),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.md),
                   _PeriodControls(state: state, controller: controller),
                   const SizedBox(height: AppSpacing.md),
                   _PlatformFilters(state: state, controller: controller),
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.md),
                   switch (state.viewMode) {
                     CalendarViewMode.month => _MonthView(
                       state: state,
@@ -202,27 +202,31 @@ class _PlatformFilters extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-    key: const Key('calendar-filters'),
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: [
-        AppChip(
-          label: 'Tous',
-          selected: state.platform == null,
-          onSelected: (_) => controller.setPlatform(null),
-        ),
-        for (final platform in platforms) ...[
-          const SizedBox(width: AppSpacing.sm),
+  Widget build(BuildContext context) {
+    final showLabels = MediaQuery.sizeOf(context).width >= 360;
+    return SingleChildScrollView(
+      key: const Key('calendar-filters'),
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
           AppChip(
-            label: platform.label,
-            selected: state.platform == platform,
-            onSelected: (_) => controller.setPlatform(platform),
+            label: 'Tous',
+            selected: state.platform == null,
+            onSelected: (_) => controller.setPlatform(null),
           ),
+          for (final platform in platforms) ...[
+            const SizedBox(width: AppSpacing.sm),
+            SocialPlatformChip(
+              platform: platform,
+              selected: state.platform == platform,
+              showLabel: showLabels,
+              onSelected: (_) => controller.setPlatform(platform),
+            ),
+          ],
         ],
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }
 
 class _MonthView extends StatelessWidget {
@@ -321,48 +325,44 @@ class _DayCell extends StatelessWidget {
       label:
           '${_fullDate(date)}, $entryCount publication${entryCount > 1 ? 's' : ''}',
       child: Material(
-        color: selected ? scheme.primary : scheme.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadius.control,
-          side: BorderSide(
-            color: isToday ? scheme.primary : scheme.outlineVariant,
-            width: isToday ? 2 : 1,
-          ),
-        ),
+        color: AppColors.transparent,
         child: InkWell(
           key: Key('calendar-day-${date.year}-${date.month}-${date.day}'),
           onTap: onTap,
           borderRadius: AppRadius.control,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxs),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '${date.day}',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: selected ? scheme.onPrimary : scheme.onSurface,
-                    fontWeight: FontWeight.w700,
+                Container(
+                  width: AppSizes.iconLarge,
+                  height: AppSizes.iconLarge,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: selected ? scheme.primary : AppColors.transparent,
+                    shape: BoxShape.circle,
+                    border:
+                        isToday && !selected
+                            ? Border.all(color: scheme.primary, width: 1.25)
+                            : null,
+                  ),
+                  child: Text(
+                    '${date.day}',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: selected ? scheme.onPrimary : scheme.onSurface,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                const SizedBox(height: AppSpacing.xxs),
                 if (entryCount > 0)
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: selected ? scheme.onPrimary : scheme.primary,
-                      borderRadius: AppRadius.capsule,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xs,
-                        vertical: AppSpacing.xxs,
-                      ),
-                      child: Text(
-                        '$entryCount',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: selected ? scheme.primary : scheme.onPrimary,
-                        ),
-                      ),
+                  Text(
+                    '$entryCount',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: scheme.primary,
+                      height: 1,
+                      fontWeight: FontWeight.w700,
                     ),
                   )
                 else
@@ -545,7 +545,11 @@ class _EntryCard extends StatelessWidget {
               height: AppSizes.avatarLarge,
             )
           else
-            AppAvatar(label: entry.platform.label, size: AppAvatarSize.large),
+            SocialPlatformIcon(
+              platform: entry.platform,
+              containerSize: AppSizes.avatarLarge,
+              size: AppSizes.iconLarge,
+            ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(

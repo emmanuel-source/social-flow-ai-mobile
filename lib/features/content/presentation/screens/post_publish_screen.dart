@@ -11,6 +11,7 @@ import '../../../../shared/widgets/app_list_tile.dart';
 import '../../../../shared/widgets/app_selection_controls.dart';
 import '../../../../shared/widgets/app_state_view.dart';
 import '../../../../shared/widgets/feature_scaffold.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../domain/entities/publish_intent.dart';
 import '../../domain/entities/social_post.dart';
@@ -44,9 +45,9 @@ class PostPublishScreen extends ConsumerWidget {
             subtitle:
                 'Cette étape prépare une intention en mode démonstration. Aucun réseau social ne sera contacté.',
           ),
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           _PostSummary(post: post),
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           const SectionHeader(title: 'Quand publier ?'),
           const SizedBox(height: AppSpacing.md),
           AppCard(
@@ -116,7 +117,7 @@ class PostPublishScreen extends ConsumerWidget {
               onRetry: () => _submit(ref, post),
             ),
           ],
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           if (submitting) ...[
             Semantics(
               liveRegion: true,
@@ -211,7 +212,8 @@ class _PostSummary extends StatelessWidget {
             spacing: AppSpacing.sm,
             runSpacing: AppSpacing.sm,
             children: [
-              for (final platform in platforms) AppBadge(label: platform.label),
+              for (final platform in platforms)
+                SocialPlatformLabel(platform: platform),
             ],
           ),
           if (caption.isNotEmpty) ...[
@@ -399,7 +401,7 @@ class _PublishSuccess extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           if (scheduled) ...[
             AppSecondaryButton(
               key: const Key('publish-view-calendar'),

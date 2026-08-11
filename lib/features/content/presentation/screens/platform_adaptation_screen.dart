@@ -7,10 +7,10 @@ import '../../../../shared/models/social_platform.dart';
 import '../../../../shared/widgets/app_badge.dart';
 import '../../../../shared/widgets/app_buttons.dart';
 import '../../../../shared/widgets/app_card.dart';
-import '../../../../shared/widgets/app_chip.dart';
 import '../../../../shared/widgets/app_text_fields.dart';
 import '../../../../shared/widgets/feature_scaffold.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 import '../../domain/entities/platform_post_variant.dart';
 import '../../domain/entities/social_post.dart';
 import '../controllers/composer_controller.dart';
@@ -79,7 +79,7 @@ class _PlatformAdaptationScreenState
           ),
           const SizedBox(height: AppSpacing.lg),
           _SourceSummary(post: post),
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           const SectionHeader(
             title: 'Plateformes sélectionnées',
             subtitle: 'Choisissez la version que vous souhaitez modifier.',
@@ -98,17 +98,14 @@ class _PlatformAdaptationScreenState
               child: Row(
                 children: [
                   for (var index = 0; index < platforms.length; index++) ...[
-                    Semantics(
+                    SocialPlatformChip(
+                      key: Key('adaptation-${platforms[index].name}'),
+                      platform: platforms[index],
                       selected: platforms[index] == activePlatform,
-                      label:
+                      semanticLabel:
                           '${platforms[index].label}, ${platforms[index] == activePlatform ? 'plateforme active' : 'plateforme inactive'}',
-                      child: AppChip(
-                        key: Key('adaptation-${platforms[index].name}'),
-                        label: platforms[index].label,
-                        selected: platforms[index] == activePlatform,
-                        onSelected:
-                            (_) => _selectPlatform(platforms[index], post),
-                      ),
+                      onSelected:
+                          (_) => _selectPlatform(platforms[index], post),
                     ),
                     if (index < platforms.length - 1)
                       const SizedBox(width: AppSpacing.sm),
@@ -117,10 +114,10 @@ class _PlatformAdaptationScreenState
               ),
             ),
           if (activePlatform != null && variant != null) ...[
-            const SizedBox(height: AppSpacing.xxl),
+            const SizedBox(height: AppSpacing.xl),
             _buildEditor(context, post, activePlatform, variant),
           ],
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           AppPrimaryButton(
             key: const Key('adaptation-continue'),
             label: 'Continuer vers l’aperçu',
@@ -168,6 +165,7 @@ class _PlatformAdaptationScreenState
             runSpacing: AppSpacing.sm,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
+              SocialPlatformIcon(platform: platform),
               Text(
                 'Version ${platform.label}',
                 style: Theme.of(context).textTheme.titleLarge,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../shared/models/social_platform.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_badge.dart';
 import '../../../../shared/widgets/app_buttons.dart';
@@ -10,6 +10,7 @@ import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_list_tile.dart';
 import '../../../../shared/widgets/section_card.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../../shared/widgets/social_platform_visuals.dart';
 import '../../domain/entities/profile_overview.dart';
 
 class ProfileContent extends StatelessWidget {
@@ -54,14 +55,14 @@ class ProfileContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _PageHeader(isDemo: overview.isDemo),
-              const SizedBox(height: AppSpacing.xxl),
+              const SizedBox(height: AppSpacing.lg),
               _IdentityCard(identity: overview.identity),
               const SizedBox(height: AppSpacing.sectionGap),
               const SectionHeader(
                 title: 'Workspace actif',
                 subtitle: 'Votre contexte de travail actuel',
               ),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.sm),
               _WorkspaceCard(workspace: overview.workspace, onTap: onWorkspace),
               const SizedBox(height: AppSpacing.sectionGap),
               SectionHeader(
@@ -71,14 +72,14 @@ class ProfileContent extends StatelessWidget {
                 actionLabel: 'Gérer',
                 onAction: onSocialAccounts,
               ),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.sm),
               _SocialAccountsCard(accounts: overview.socialAccounts),
               const SizedBox(height: AppSpacing.sectionGap),
               const SectionHeader(
                 title: 'Organisation',
                 subtitle: 'Marque, équipe et automatisations',
               ),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.sm),
               SectionCard(
                 padding: const EdgeInsets.all(AppSpacing.sm),
                 child: Column(
@@ -89,18 +90,21 @@ class ProfileContent extends StatelessWidget {
                       subtitle: 'Identité et règles de marque',
                       onTap: onBrandKit,
                     ),
+                    const Divider(height: 1),
                     _ProfileTile(
                       icon: Icons.groups_outlined,
                       title: 'Équipe et permissions',
                       subtitle: '${overview.workspace.membersCount} membres',
                       onTap: onTeam,
                     ),
+                    const Divider(height: 1),
                     _ProfileTile(
                       icon: Icons.fact_check_outlined,
                       title: 'Validations',
                       subtitle: 'Flux de revue des contenus',
                       onTap: onApprovals,
                     ),
+                    const Divider(height: 1),
                     _ProfileTile(
                       icon: Icons.auto_awesome_outlined,
                       title: 'Agents et automatisations',
@@ -115,7 +119,7 @@ class ProfileContent extends StatelessWidget {
                 title: 'Compte et préférences',
                 subtitle: 'Forfait, alertes et sécurité',
               ),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.sm),
               SectionCard(
                 padding: const EdgeInsets.all(AppSpacing.sm),
                 child: Column(
@@ -126,18 +130,21 @@ class ProfileContent extends StatelessWidget {
                       subtitle: 'Plan ${overview.identity.planName}',
                       onTap: onSubscription,
                     ),
+                    const Divider(height: 1),
                     _ProfileTile(
                       icon: Icons.notifications_none,
                       title: 'Notifications',
                       subtitle: 'Canaux et fréquence des alertes',
                       onTap: onNotifications,
                     ),
+                    const Divider(height: 1),
                     _ProfileTile(
                       icon: Icons.security_outlined,
                       title: 'Sécurité',
                       subtitle: 'Accès et sessions actives',
                       onTap: onSecurity,
                     ),
+                    const Divider(height: 1),
                     _ProfileTile(
                       icon: Icons.settings_outlined,
                       title: 'Paramètres',
@@ -147,7 +154,7 @@ class ProfileContent extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: AppSpacing.xxl),
+              const SizedBox(height: AppSpacing.lg),
               AppSecondaryButton(
                 key: const Key('profile-logout'),
                 label: 'Se déconnecter',
@@ -212,43 +219,33 @@ class _IdentityCard extends StatelessWidget {
     return AppCard(
       elevated: true,
       semanticLabel: 'Profil de ${identity.name}, ${identity.email}',
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           AppAvatar(label: identity.name, size: AppAvatarSize.large),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  identity.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  identity.email,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.sm,
-                  children: [
-                    AppBadge(
-                      label: 'Plan ${identity.planName}',
-                      icon: Icons.workspace_premium_outlined,
-                      tone: AppBadgeTone.info,
-                    ),
-                  ],
-                ),
-              ],
+          const SizedBox(height: AppSpacing.md),
+          Text(
+            identity.name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            identity.email,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          AppBadge(
+            label: 'Plan ${identity.planName}',
+            icon: Icons.workspace_premium_outlined,
+            tone: AppBadgeTone.info,
           ),
         ],
       ),
@@ -275,7 +272,7 @@ class _WorkspaceCard extends StatelessWidget {
             icon: Icons.workspaces_outline,
             size: AppAvatarSize.large,
           ),
-          const SizedBox(width: AppSpacing.lg),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,21 +309,32 @@ class _SocialAccountsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      child: Wrap(
-        spacing: AppSpacing.sm,
-        runSpacing: AppSpacing.sm,
-        children: [
-          for (final account in accounts)
-            AppBadge(
-              label:
-                  '${account.platform.label} · ${account.isConnected ? 'Connecté' : 'Non connecté'}',
-              icon: _platformIcon(account.platform),
-              tone:
-                  account.isConnected
-                      ? AppBadgeTone.success
-                      : AppBadgeTone.neutral,
-            ),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final stacked = constraints.maxWidth < 320;
+          if (stacked) {
+            return Column(
+              children: [
+                for (var index = 0; index < accounts.length; index++) ...[
+                  _SocialAccountStatus(
+                    account: accounts[index],
+                    expanded: true,
+                  ),
+                  if (index < accounts.length - 1)
+                    const SizedBox(height: AppSpacing.sm),
+                ],
+              ],
+            );
+          }
+          return Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: [
+              for (final account in accounts)
+                _SocialAccountStatus(account: account),
+            ],
+          );
+        },
       ),
     );
   }
@@ -356,10 +364,70 @@ class _ProfileTile extends StatelessWidget {
   }
 }
 
-IconData _platformIcon(SocialPlatform platform) => switch (platform) {
-  SocialPlatform.instagram => Icons.camera_alt_outlined,
-  SocialPlatform.facebook => Icons.facebook,
-  SocialPlatform.tiktok => Icons.music_note_outlined,
-  SocialPlatform.youtube => Icons.play_circle_outline,
-  _ => Icons.public,
-};
+class _SocialAccountStatus extends StatelessWidget {
+  const _SocialAccountStatus({required this.account, this.expanded = false});
+
+  final ProfileSocialAccount account;
+  final bool expanded;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final statusLabel = account.isConnected ? 'Connecté' : 'Non connecté';
+    return Semantics(
+      container: true,
+      label: '${account.platform.label}, $statusLabel',
+      child: ExcludeSemantics(
+        child: SizedBox(
+          width: expanded ? double.infinity : null,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerLow,
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+              border: Border.all(
+                color: scheme.outlineVariant.withValues(alpha: 0.72),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.sm,
+                vertical: AppSpacing.xs,
+              ),
+              child: Row(
+                mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
+                children: [
+                  SocialPlatformIcon(
+                    platform: account.platform,
+                    size: AppSizes.iconExtraSmall,
+                    contained: false,
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
+                  if (expanded)
+                    Expanded(
+                      child: Text(
+                        account.platform.label,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    )
+                  else
+                    Text(
+                      account.platform.label,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  const SizedBox(width: AppSpacing.sm),
+                  SocialPlatformStatus(
+                    label: statusLabel,
+                    tone:
+                        account.isConnected
+                            ? SocialPlatformStatusTone.success
+                            : SocialPlatformStatusTone.neutral,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

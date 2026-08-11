@@ -86,7 +86,7 @@ class _PostTypeScreenState extends ConsumerState<PostTypeScreen> {
             if (index < _options.length - 1)
               const SizedBox(height: AppSpacing.sm),
           ],
-          const SizedBox(height: AppSpacing.xxl),
+          const SizedBox(height: AppSpacing.xl),
           AppPrimaryButton(
             key: const Key('post-type-continue'),
             label: 'Continuer',
