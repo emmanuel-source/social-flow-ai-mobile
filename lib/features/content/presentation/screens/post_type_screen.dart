@@ -102,7 +102,7 @@ class _PostTypeScreenState extends ConsumerState<PostTypeScreen> {
     final selectedType = _selectedType;
     if (selectedType == null) return;
 
-    ref.read(composerControllerProvider.notifier).setType(selectedType);
+    ref.read(composerControllerProvider.notifier).startNew(selectedType);
     final onContinue = widget.onContinue;
     if (onContinue != null) {
       onContinue(selectedType);

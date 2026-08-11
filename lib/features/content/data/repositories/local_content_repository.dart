@@ -13,15 +13,4 @@ class LocalContentRepository implements ContentRepository {
     });
     return id;
   }
-
-  @override
-  Future<String> saveDraft(SocialPost post) async {
-    final id = 'draft-${DateTime.now().millisecondsSinceEpoch}';
-    await LocalStorage.drafts.put(id, {
-      'status': 'draft',
-      'caption': post.caption,
-      'media': post.mediaPaths,
-    });
-    return id;
-  }
 }

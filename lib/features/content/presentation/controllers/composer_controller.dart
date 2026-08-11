@@ -5,6 +5,8 @@ import '../../data/repositories/local_content_repository.dart';
 import '../../domain/entities/platform_post_variant.dart';
 import '../../domain/entities/social_post.dart';
 import '../../domain/repositories/content_repository.dart';
+import '../../../drafts/application/drafts_controller.dart';
+import '../../../drafts/domain/entities/draft.dart';
 
 final contentRepositoryProvider = Provider<ContentRepository>(
   (ref) => LocalContentRepository(),
@@ -13,6 +15,10 @@ final composerControllerProvider =
     NotifierProvider<ComposerController, SocialPost>(ComposerController.new);
 
 class ComposerController extends Notifier<SocialPost> {
+  String? _activeDraftId;
+
+  String? get activeDraftId => _activeDraftId;
+
   @override
   SocialPost build() => _emptyPost;
 
@@ -25,7 +31,20 @@ class ComposerController extends Notifier<SocialPost> {
   );
 
   /// Clears the active draft only after a completed publishing simulation.
-  void reset() => state = _emptyPost;
+  void reset() {
+    _activeDraftId = null;
+    state = _emptyPost;
+  }
+
+  void startNew(PostType type) {
+    reset();
+    state = _emptyPost.copyWith(type: type);
+  }
+
+  void restoreDraft(Draft draft) {
+    _activeDraftId = draft.id;
+    state = draft.toSocialPost();
+  }
 
   void setType(PostType value) {
     if (state.type == value) return;
@@ -142,8 +161,14 @@ class ComposerController extends Notifier<SocialPost> {
         scheduledAt: date,
       );
 
-  Future<String> saveDraft() =>
-      ref.read(contentRepositoryProvider).saveDraft(state);
+  Future<Draft> saveDraft() async {
+    final saved = await ref
+        .read(draftsControllerProvider.notifier)
+        .save(post: state, draftId: _activeDraftId);
+    _activeDraftId = saved.id;
+    return saved;
+  }
+
   Future<String> publish() =>
       ref.read(contentRepositoryProvider).publish(state);
 }

@@ -40,7 +40,9 @@ class ComposerScreen extends ConsumerStatefulWidget {
 class _ComposerScreenState extends ConsumerState<ComposerScreen> {
   late final TextEditingController _textController;
   var _isPicking = false;
+  var _isSaving = false;
   String? _mediaError;
+  String? _saveError;
 
   @override
   void initState() {
@@ -138,6 +140,28 @@ class _ComposerScreenState extends ConsumerState<ComposerScreen> {
             ],
           ),
           const SizedBox(height: AppSpacing.xxl),
+          AppSecondaryButton(
+            key: const Key('composer-save-draft'),
+            label: 'Enregistrer le brouillon',
+            icon: Icons.save_outlined,
+            loading: _isSaving,
+            onPressed: _isSaving || _isPicking ? null : _saveDraft,
+          ),
+          if (_saveError != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Semantics(
+              liveRegion: true,
+              label: 'Erreur de sauvegarde : $_saveError',
+              child: Text(
+                _saveError!,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(height: AppSpacing.sm),
           AppPrimaryButton(
             key: const Key('composer-continue'),
             label: 'Continuer',
@@ -260,6 +284,29 @@ class _ComposerScreenState extends ConsumerState<ComposerScreen> {
       return;
     }
     Navigator.pushNamed(context, AppRoutes.postPlatforms);
+  }
+
+  Future<void> _saveDraft() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    setState(() {
+      _isSaving = true;
+      _saveError = null;
+    });
+    try {
+      await ref.read(composerControllerProvider.notifier).saveDraft();
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Brouillon enregistré')));
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _saveError = 'Impossible d’enregistrer ce brouillon pour le moment.';
+        });
+      }
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
   }
 }
 

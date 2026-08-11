@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/app_routes.dart';
 import '../../../../core/theme/app_breakpoints.dart';
@@ -13,6 +14,8 @@ import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_list_tile.dart';
 import '../../../../shared/widgets/section_card.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../drafts/domain/entities/draft.dart';
+import '../controllers/composer_controller.dart';
 
 class CreateHubScreen extends StatelessWidget {
   const CreateHubScreen({super.key});
@@ -75,9 +78,7 @@ class CreateHubScreen extends StatelessWidget {
                             () => _open(context, AppRoutes.mediaLibrary),
                       ),
                       const SizedBox(height: AppSpacing.sectionGap),
-                      _ResumeSection(
-                        onDrafts: () => _open(context, AppRoutes.drafts),
-                      ),
+                      _ResumeSection(onDrafts: () => _openDrafts(context)),
                     ],
                   ),
                 ),
@@ -91,6 +92,15 @@ class CreateHubScreen extends StatelessWidget {
 
   void _open(BuildContext context, String route) {
     Navigator.pushNamed(context, route);
+  }
+
+  Future<void> _openDrafts(BuildContext context) async {
+    final result = await Navigator.pushNamed(context, AppRoutes.drafts);
+    if (!context.mounted || result is! Draft) return;
+    ProviderScope.containerOf(
+      context,
+    ).read(composerControllerProvider.notifier).restoreDraft(result);
+    await Navigator.pushNamed(context, AppRoutes.postMedia);
   }
 }
 
